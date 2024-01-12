@@ -20,7 +20,8 @@ project(UplinkDecompiled)
 
 add_library(UplinkDecompiled SHARED
 	Source/LibMain.cpp
-	Source/Main.cpp)
+	Source/Main.cpp
+	Source/BinReloc.cpp)
 
 target_include_directories(UplinkDecompiled PRIVATE Include)
 
