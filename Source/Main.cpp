@@ -1,5 +1,6 @@
 #include <App.hpp>
 #include <BinReloc.hpp>
+#include <RedShirt.hpp>
 #include <TempDefines.hpp>
 #include <Util.hpp>
 #include <ctime>
@@ -36,16 +37,17 @@ static void Init_App(const char* path)
 	if (dir)
 		delete[] dir;
 
-	puts("=============================");
-	puts("=                           =");
-	puts("=        U P L I N K        =");
-	puts("=                           =");
-	printf("=        Version %-10s =\n", gApp->Version);
-	puts("=     - R E L E A S E -     =");
-	puts("=                           =");
-	puts("=============================");
-	putchar(L'\n');
-	puts(gApp->Build);
+	printf("=============================\n"
+		   "=                           =\n"
+		   "=        U P L I N K        =\n"
+		   "=                           =\n"
+		   "=        Version %-10s =\n"
+		   "=     - R E L E A S E -     =\n"
+		   "=                           =\n"
+		   "=============================\n"
+		   "\n"
+		   "%s\n",
+		   gApp->Version, gApp->Build);
 
 	MakeDirectory(gApp->UsersPath);
 
@@ -69,17 +71,20 @@ static void Init_App(const char* path)
 
 	const auto currentTime = time((time_t*)0x0);
 	const auto localTime = localtime(&currentTime);
-	puts("\n");
-	puts("===============================================");
-	printf("NEW GAME     %d:%d, %d/%d/%d\n", localTime->tm_hour, localTime->tm_min, localTime->tm_mday, localTime->tm_mon + 1,
-		   localTime->tm_year + 1900);
-	puts("===============================================");
-	printf("Version : %s\n", gApp->Version);
-	puts("RELEASE");
-	puts("Linux Build");
-	puts(gApp->Build);
-	printf("Path : %s\n", gApp->Path);
-	RsInitialise(gApp->Path);
+
+	printf("\n\n"
+		   "===============================================\n"
+		   "NEW GAME     %d:%d, %d/%d/%d\n"
+		   "===============================================\n"
+		   "Version : %s\n"
+		   "RELEASE\n"
+		   "Linux Build\n"
+		   "%s\n"
+		   "Path : %s\n",
+		   localTime->tm_hour, localTime->tm_min, localTime->tm_mday, localTime->tm_mon + 1, localTime->tm_year + 1900, gApp->Version,
+		   gApp->Build, gApp->Path);
+
+	RedShirt::Initialise(gApp->Path);
 	gApp->Initialise();
 	return;
 }
@@ -105,13 +110,13 @@ static void RunUplink(const int argc, char* argv[])
 		Cleanup_Uplink();
 		return;
 	}
-
 	Init_Game();
 	Init_Graphics();
 	Init_OpenGL();
 	Init_Fonts();
-	Init_Sound();
-	Init_Music();
+	// TODO: reenable sound
+	// Init_Sound();
+	// Init_Music();
 	Run_MainMenu();
 	Run_Game();
 	Cleanup_Uplink();

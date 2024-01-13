@@ -13,6 +13,12 @@ static const auto file_stdoutPtr = (FILE**)0x007B2F30;
 static const auto gAppPtr = (App**)0x007B2710;
 #define gApp (*gAppPtr)
 
+static const auto gRsAppPath = (char*)0x007B2000;
+static const auto gRsTempDir = (char*)0x007B2100;
+
+static const auto gRsInitialisedPtr = (bool*)0x007B3895;
+#define gRsInitialised (*gRsInitialisedPtr)
+
 static const auto baseCompileDate = (const char*)0x005448F8;
 static const auto baseCompileTime = (const char*)0x005448EF;
 
@@ -30,7 +36,7 @@ static const auto Run_MainMenu = (void (*)(void))0x0049FD40;
 static const auto Run_Game = (void (*)(void))0x0049FD30;
 static const auto Cleanup_Uplink = (void (*)(void))0x0049FCA0;
 
-static const auto RsInitialise = (void (*)(const char*))0x005127D0;
+static const auto BglCloseAllFiles = (void (*)(void))0x00513740;
 
 static const auto App__Close = (void (*)(App*))0x00407230;
 static const auto App__Print = (void (*)(App*))0x00406D30;

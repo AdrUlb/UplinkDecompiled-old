@@ -39,7 +39,7 @@ void EmptyDirectory(const char* path)
 	if (!dir)
 		return;
 
-	for (auto dirEntry = readdir(dir); dirEntry != nullptr; dirEntry = readdir(dir))
+	for (auto dirEntry = readdir(dir); dirEntry; dirEntry = readdir(dir))
 	{
 		if (strcmp(dirEntry->d_name, ".") == 0)
 			continue;
