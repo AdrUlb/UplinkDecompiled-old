@@ -1,7 +1,10 @@
 #pragma once
 
+#include <MainMenu.hpp>
+#include <Network.hpp>
+#include <Options.hpp>
+#include <PhoneDialler.hpp>
 #include <UplinkObject.hpp>
-#include <TempDefines.hpp>
 
 class App : UplinkObject
 {
@@ -13,7 +16,6 @@ public:
 	static constexpr size_t TitleMax = 0x40;
 	static constexpr size_t BuildMax = 0x100;
 
-private:
 	char Path[PathMax];
 	char UsersPath[PathMax];
 	char UsersTempPath[PathMax];
@@ -23,6 +25,8 @@ private:
 	char Date[DateMax];
 	char Title[TitleMax];
 	char Build[BuildMax];
+
+private:
 	int InitTime;
 	bool Closed;
 	Options* TheOptions;
@@ -32,10 +36,14 @@ private:
 	char* NextLoadGame;
 	bool RequireCodeCard;
 
+public:
+	App();
+	void Set(const char* path, const char* version, const char* type, const char* date, const char* title);
+	void Initialise();
+
+private:
 	virtual ~App() override;
-	virtual bool Load() override;
-	virtual void Save() override;
 	virtual void Print() override;
 	virtual void Update() override;
-	virtual char* GetID() override;
+	virtual const char* GetID() override;
 };

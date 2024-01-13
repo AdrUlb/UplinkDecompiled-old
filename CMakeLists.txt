@@ -19,9 +19,11 @@ endif()
 project(UplinkDecompiled)
 
 add_library(UplinkDecompiled SHARED
+	Source/App.cpp
+	Source/BinReloc.cpp
 	Source/LibMain.cpp
 	Source/Main.cpp
-	Source/BinReloc.cpp)
+	Source/UplinkObject.cpp)
 
 target_include_directories(UplinkDecompiled PRIVATE Include)
 
