@@ -12,14 +12,14 @@ App::App()
 	UplinkStrncpy(this->Date, "01/01/97", DateMax);
 	UplinkStrncpy(this->Title, "NewApp", TitleMax);
 	UplinkStrncpy(this->Build, "Version 1.0 (RELEASE), Compiled on 01/01/97", BuildMax);
-	this->InitTime = 0;
-	this->TheOptions = nullptr;
-	this->TheNetwork = nullptr;
-	this->TheMainMenu = nullptr;
-	this->ThePhoneDialler = nullptr;
-	this->NextLoadGame = nullptr;
-	this->Closed = false;
-	this->RequireCodeCard = false;
+	InitTime = 0;
+	TheOptions = nullptr;
+	TheNetwork = nullptr;
+	TheMainMenu = nullptr;
+	ThePhoneDialler = nullptr;
+	NextLoadGame = nullptr;
+	Closed = false;
+	RequireCodeCard = false;
 }
 
 App::~App()
