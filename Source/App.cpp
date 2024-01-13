@@ -65,7 +65,7 @@ void App::Set(const char* path, const char* version, const char* type, const cha
 	// TODO: remove base game compile date
 	UplinkSnprintf(this->Build, BuildMax,
 				   "Version %s (%s)\n"
-				   "Base game compiled on %s at %s\n"
+				   "Base compiled on %s at %s\n"
 				   "Compiled on %s\n",
 				   this->Version, this->Type, baseCompileDate, baseCompileTime, this->Date);
 

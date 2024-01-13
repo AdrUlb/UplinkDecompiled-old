@@ -1,5 +1,8 @@
 #pragma once
+#include <cstdio>
 #include <cstring>
+#include <unistd.h>
+#include <sys/stat.h>
 
 // Original decompiled sources suggest a redundant null terminator was written to the end of the string.
 // This is not required as strncpy pads the end of the buffer with zeros until num bytes have been written.
@@ -47,3 +50,17 @@
 		}                                                                                                                                  \
 		buffer[bufferSize - 1] = 0;                                                                                                        \
 	}
+
+static inline bool DoesFileExist(const char* path)
+{
+	return access(path, 0) == 0;
+}
+
+static inline void MakeDirectory(char* path)
+{
+	mkdir(path, 0700);
+}
+
+char* GetFilePath(const char* path);
+
+void EmptyDirectory(const char* path);
