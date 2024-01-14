@@ -23,6 +23,8 @@ add_library(UplinkDecompiled SHARED
 	Source/BinReloc.cpp
 	Source/LibMain.cpp
 	Source/Main.cpp
+	Source/MainMenu.cpp
+	Source/Options.cpp
 	Source/RedShirt.cpp
 	Source/UplinkObject.cpp
 	Source/Util.cpp)

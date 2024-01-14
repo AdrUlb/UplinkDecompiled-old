@@ -12,19 +12,19 @@ App::App()
 	UplinkStrncpy(this->Date, "01/01/97", DateMax);
 	UplinkStrncpy(this->Title, "NewApp", TitleMax);
 	UplinkStrncpy(this->Build, "Version 1.0 (RELEASE), Compiled on 01/01/97", BuildMax);
-	InitTime = 0;
-	TheOptions = nullptr;
-	TheNetwork = nullptr;
-	TheMainMenu = nullptr;
-	ThePhoneDialler = nullptr;
-	NextLoadGame = nullptr;
-	Closed = false;
-	RequireCodeCard = false;
+	initTime = 0;
+	options = nullptr;
+	network = nullptr;
+	mainMenu = nullptr;
+	phoneDialler = nullptr;
+	nextLoadGame = nullptr;
+	closed = false;
+	requireCodeCard = false;
 }
 
 App::~App()
 {
-	if (!Closed)
+	if (!closed)
 	{
 		App__Close(this);
 	}
@@ -86,5 +86,13 @@ void App::Set(const char* path, const char* version, const char* type, const cha
 
 void App::Initialise()
 {
-	App__Initialise(this);
+	options = new Options();
+	options->Load();
+	options->CreateDefaultOptions();
+	initTime = EclGetAccurateTime();
+	mainMenu = new MainMenu();
+	// TODO: fix ugly hack until Network is implemented, definitely UB
+	// network = new Network();
+	network = (Network*)new char[0x68];
+	Network__Network(network);
 }

@@ -27,14 +27,14 @@ public:
 	char Build[BuildMax];
 
 private:
-	int InitTime;
-	bool Closed;
-	Options* TheOptions;
-	Network* TheNetwork;
-	MainMenu* TheMainMenu;
-	PhoneDialler* ThePhoneDialler;
-	char* NextLoadGame;
-	bool RequireCodeCard;
+	int initTime;
+	bool closed;
+	Options* options;
+	Network* network;
+	MainMenu* mainMenu;
+	PhoneDialler* phoneDialler;
+	char* nextLoadGame;
+	bool requireCodeCard;
 
 public:
 	App();

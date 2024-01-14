@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdio>
 #include <cstring>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 // Original decompiled sources suggest a redundant null terminator was written to the end of the string.
 // This is not required as strncpy pads the end of the buffer with zeros until num bytes have been written.

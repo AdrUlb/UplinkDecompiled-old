@@ -1,6 +1,7 @@
 #pragma once
 
 #include <App.hpp>
+#include <Options.hpp>
 #include <cstdint>
 #include <cstdio>
 
@@ -35,6 +36,7 @@ static const auto Init_OpenGL = (void (*)(void))0x080FDC90;
 static const auto Run_MainMenu = (void (*)(void))0x080FDA70;
 static const auto Run_Game = (void (*)(void))0x080FDA60;
 static const auto Cleanup_Uplink = (void (*)(void))0x080FD9C0;
+static const auto DeleteBTreeData = (void(*)(BTree<UplinkObject*>*))0x080587A0;
 
 static const auto BglCloseAllFiles = (void (*)(void))0x0817DF90;
 

@@ -7,3 +7,13 @@
 #else
 #error Platform not supported.
 #endif
+
+static inline void DeleteBTreeData(BTree<UplinkObject*>* tree)
+{
+	DeleteBTreeDataImpl(tree);
+}
+
+static inline void DeleteBTreeData(BTree<Option*>* tree)
+{
+	DeleteBTreeDataImpl((BTree<UplinkObject*>*)tree);
+}
