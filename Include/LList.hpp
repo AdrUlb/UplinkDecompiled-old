@@ -26,7 +26,7 @@ public:
 
 template <typename T> LListItem<T>::LListItem() : Next(nullptr), Prev(nullptr) {}
 
-template <typename T> LList<T>::LList() : firstItem(nullptr), lastItem(nullptr), length(0), cachedItem(nullptr), cachedItemIndex(-1) {}
+template <typename T> LList<T>::LList() : firstItem(nullptr), lastItem(nullptr), cachedItem(nullptr), cachedItemIndex(-1), length(0) {}
 
 template <typename T> LList<T>::~LList()
 {

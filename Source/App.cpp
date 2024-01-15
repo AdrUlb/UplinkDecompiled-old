@@ -47,10 +47,6 @@ const char* App::GetID()
 
 void App::Set(const char* path, const char* version, const char* type, const char* date, const char* title)
 {
-	unsigned int uVar1;
-	size_t uVar4;
-	char* pcVar5;
-
 	// TODO: remove redundant assertions, UplinkStrncpy checks this
 	UplinkAssert(strlen(path) < PathMax);
 	UplinkAssert(strlen(version) < VersionMax);

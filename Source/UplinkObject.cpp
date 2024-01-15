@@ -5,6 +5,7 @@ UplinkObject::~UplinkObject() {}
 
 bool UplinkObject::Load(FILE* file)
 {
+	(void)file;
 	return true;
 }
 
@@ -22,5 +23,12 @@ size_t UplinkObject::GetOBJECTID()
 	return 0;
 }
 
-void UplinkObject::LoadID(FILE* file) {}
-void UplinkObject::LoadID_END(FILE* file) {}
+void UplinkObject::LoadID(FILE* file)
+{
+	(void)file;
+}
+
+void UplinkObject::LoadID_END(FILE* file)
+{
+	(void)file;
+}

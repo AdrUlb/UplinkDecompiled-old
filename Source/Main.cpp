@@ -59,8 +59,7 @@ static void Init_App(const char* path)
 
 	MakeDirectory(gApp->UsersOldPath);
 
-	// TODO: reenable debug.log file
-	/*UplinkSnprintf(debugLogFileName, sizeof(debugLogFileName), "%sdebug.log", gApp->UsersPath);
+	UplinkSnprintf(debugLogFileName, sizeof(debugLogFileName), "%sdebug.log", gApp->UsersPath);
 
 	file_stdout = nullptr;
 	const auto fdstdout = dup(fileno(stdout));
@@ -71,7 +70,7 @@ static void Init_App(const char* path)
 		printf("WARNING : Failed to open %s for writing stdout\n", debugLogFileName);
 
 	if (!freopen(debugLogFileName, "a", stderr))
-		printf("WARNING : Failed to open %s for writing stderr\n", debugLogFileName);*/
+		printf("WARNING : Failed to open %s for writing stderr\n", debugLogFileName);
 
 	const auto currentTime = time((time_t*)0x0);
 	const auto localTime = localtime(&currentTime);

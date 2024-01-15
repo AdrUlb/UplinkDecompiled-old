@@ -38,7 +38,7 @@
 
 #define UplinkSnprintf(buffer, bufferSize, format, ...)                                                                                    \
 	{                                                                                                                                      \
-		if (snprintf(buffer, bufferSize, format, __VA_ARGS__) >= bufferSize)                                                               \
+		if (bufferSize < 0 || (size_t)snprintf(buffer, bufferSize, format, __VA_ARGS__) >= (size_t)bufferSize)                             \
 		{                                                                                                                                  \
 			printf("\nAn Uplink snprintf Failure has occured\n======================================\n"                                    \
 				   " Location    : %s, line %d\n"                                                                                          \

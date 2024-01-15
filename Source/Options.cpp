@@ -1,6 +1,9 @@
 #include <Options.hpp>
 #include <TempDefines.hpp>
 
+constexpr auto saveVersion = "SAV62";
+constexpr auto minSaveVersion = "SAV56";
+
 Options::Options()
 {
 	strncpy(themeName, "graphics", themeNameMax);
@@ -26,6 +29,7 @@ Options::~Options()
 
 bool Options::Load(FILE* file)
 {
+	(void)file;
 	FILE* optionsFile;
 	char optionsFilePath[0x100];
 	char themeName[themeNameMax];
@@ -56,8 +60,8 @@ bool Options::Load(FILE* file)
 		return false;
 	}
 
-	if (!FileReadDataInt(__FILE__, __LINE__, saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, "SAV56") < 0 ||
-		strcmp(saveVersion, "SAV62") > 0)
+	if (!FileReadDataInt(__FILE__, __LINE__, saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 ||
+		strcmp(saveVersion, minSaveVersion) < 0 || strcmp(saveVersion, saveVersion) > 0)
 	{
 		puts("\nERROR : Could not load options due to incompatible version format");
 		if (fileEncrypted)
