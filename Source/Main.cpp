@@ -79,8 +79,7 @@ static void Init_App(const char* path)
 		   "===============================================\n"
 		   "NEW GAME     %d:%d, %d/%d/%d\n"
 		   "===============================================\n"
-		   "Version : %s\n"
-		   buildTypeString"\n"
+		   "Version : %s\n" buildTypeString "\n"
 		   "Linux Build\n"
 		   "%s\n"
 		   "Path : %s\n",
@@ -90,6 +89,15 @@ static void Init_App(const char* path)
 	RedShirt::Initialise(gApp->Path);
 	gApp->Initialise();
 	return;
+}
+
+static void Cleanup_Uplink()
+{
+	if (gApp)
+	{
+		delete gApp;
+		gApp = nullptr;
+	}
 }
 
 static void RunUplink(const int argc, char* argv[])

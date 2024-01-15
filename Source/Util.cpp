@@ -56,9 +56,6 @@ void EmptyDirectory(const char* path)
 
 void PrintDArray(DArray<UplinkObject*>* array)
 {
-	UplinkObject* item;
-	UplinkObject* plVar4;
-
 	UplinkAssert(array);
 
 	for (auto i = 0; i < array->Size(); i++)
@@ -71,7 +68,7 @@ void PrintDArray(DArray<UplinkObject*>* array)
 			continue;
 		}
 
-		item = array->GetData(i);
+		const auto item = array->GetData(i);
 
 		if (!item)
 		{

@@ -4,7 +4,7 @@
 
 static inline uintptr_t GetPageFromAddress(uintptr_t address)
 {
-	return address & ~(PAGESIZE - 1);
+	return address & ~(pagesize - 1);
 }
 
 template <typename T> static void WriteCode(uintptr_t address, T value)
@@ -14,17 +14,17 @@ template <typename T> static void WriteCode(uintptr_t address, T value)
 	const auto page1 = reinterpret_cast<void*>(GetPageFromAddress(address));
 	const auto page2 = reinterpret_cast<void*>(GetPageFromAddress(address + sizeof(T) - 1));
 
-	mprotect(page1, PAGESIZE, PROT_WRITE);
+	mprotect(page1, pagesize, PROT_WRITE);
 
 	if (page1 != page2)
-		mprotect(page2, PAGESIZE, PROT_WRITE);
+		mprotect(page2, pagesize, PROT_WRITE);
 
 	*ptr = value;
 
-	mprotect(page1, PAGESIZE, PROT_EXEC | PROT_READ);
+	mprotect(page1, pagesize, PROT_EXEC | PROT_READ);
 
 	if (page1 != page2)
-		mprotect(page2, PAGESIZE, PROT_EXEC | PROT_READ);
+		mprotect(page2, pagesize, PROT_EXEC | PROT_READ);
 }
 
 static void WriteJump(uintptr_t from, const uintptr_t to)

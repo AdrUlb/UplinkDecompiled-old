@@ -1,4 +1,5 @@
 #include <Options.hpp>
+#include <RedShirt.hpp>
 #include <TempDefines.hpp>
 
 constexpr auto saveVersion = "SAV62";
@@ -39,17 +40,17 @@ bool Options::Load(FILE* file)
 
 	printf("Loading uplink options from %s...", optionsFilePath);
 
-	const auto fileEncrypted = RsFileEncryptedNoVerify(optionsFilePath);
+	const auto fileEncrypted = RedShirt::FileEncryptedNoVerify(optionsFilePath);
 
 	if (fileEncrypted)
 	{
-		if (!RsFileEncrypted(optionsFilePath))
+		if (!RedShirt::FileEncrypted(optionsFilePath))
 		{
 			puts("failed");
 			return false;
 		}
 
-		optionsFile = RsFileOpen(optionsFilePath, "rb");
+		optionsFile = RedShirt::FileOpen(optionsFilePath, "rb");
 	}
 	else
 		optionsFile = fopen(optionsFilePath, "rb");
@@ -66,7 +67,7 @@ bool Options::Load(FILE* file)
 		puts("\nERROR : Could not load options due to incompatible version format");
 		if (fileEncrypted)
 		{
-			RsFileClose(optionsFilePath, optionsFile);
+			RedShirt::FileClose(optionsFilePath, optionsFile);
 			return false;
 		}
 		fclose(optionsFile);
@@ -97,7 +98,7 @@ bool Options::Load(FILE* file)
 
 	if (fileEncrypted)
 	{
-		RsFileClose(optionsFilePath, optionsFile);
+		RedShirt::FileClose(optionsFilePath, optionsFile);
 	}
 	else
 		fclose(optionsFile);

@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <cstdio>
 
-static constexpr uintptr_t PAGESIZE = 4096;
+static constexpr uintptr_t pagesize = 4096;
 static constexpr uintptr_t mainAddr = 0x080FF260;
 
 static const auto file_stdoutPtr = (FILE**)0x08206A24;
@@ -36,18 +36,19 @@ static const auto Init_Music = (void (*)(void))0x080FDFF0;
 static const auto Init_OpenGL = (void (*)(void))0x080FDC90;
 static const auto Run_MainMenu = (void (*)(void))0x080FDA70;
 static const auto Run_Game = (void (*)(void))0x080FDA60;
-static const auto Cleanup_Uplink = (void (*)(void))0x080FD9C0;
 static const auto DeleteBTreeData = (void (*)(BTree<UplinkObject*>*))0x080587A0;
 static const auto DeleteDArrayDataD = (void (*)(DArray<UplinkObject*>*))0x080591D0;
 static const auto EclGetAccurateTime = (double (*)(void))0x08177BB0;
 static const auto LoadBTree = (bool (*)(BTree<UplinkObject*>*, FILE*))0x08059460;
 
 static const auto BglCloseAllFiles = (void (*)(void))0x0817DF90;
-static const auto RsFileEncryptedNoVerify = (bool (*)(char*))0x0817D520;
-static const auto RsFileEncrypted = (bool (*)(char*))0x0817D600;
-static const auto RsFileOpen = (FILE * (*)(char*, const char*))0x0817D8D0;
-static const auto RsFileClose = (void (*)(char*, FILE*))0x0817D110;
 static const auto FileReadDataInt = (bool (*)(const char*, unsigned int, void*, size_t, size_t, FILE*))0x080568B0;
+static const auto filterFile =
+	(bool (*)(const char*, char*, bool (*)(FILE*), bool (*)(FILE*), bool (*)(FILE*), void (*)(unsigned char*, unsigned int)))0x0817D7C0;
+static const auto readRsEncryptedHeader = (bool (*)(FILE*))0x0817D460;
+static const auto noHeader = (bool (*)(FILE*))0x0817CE20;
+static const auto decryptBuffer = (void (*)(unsigned char*, unsigned int))0x0817CE00;
+static const auto RsFileCheckSum = (__attribute__((regparm(3))) unsigned int (*)(FILE*, unsigned char*, unsigned int))0x0817D570;
 
 static const auto App__Close = (void (*)(App*))0x0804D5B0;
 static const auto App__Print = (void (*)(App*))0x0804D060;

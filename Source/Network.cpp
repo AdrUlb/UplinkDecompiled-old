@@ -11,7 +11,7 @@ NetworkServer::~NetworkServer()
 
 void NetworkServer::Print()
 {
-	printf("NetworkServer : listensocket:%d, lastlisten:%d\n", socket, lastListen);
+	printf("NetworkServer : listensocket:%d, lastlisten:%ld\n", socket, lastListen);
 	PrintDArray((DArray<UplinkObject*>*)&connections);
 }
 
