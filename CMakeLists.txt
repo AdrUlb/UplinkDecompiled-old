@@ -24,15 +24,17 @@ add_library(UplinkDecompiled SHARED
 	Source/LibMain.cpp
 	Source/Main.cpp
 	Source/MainMenu.cpp
+	Source/Network.cpp
 	Source/Options.cpp
 	Source/RedShirt.cpp
+	Source/TempStubs.cpp
 	Source/UplinkObject.cpp
 	Source/Util.cpp)
 
-target_include_directories(UplinkDecompiled PRIVATE Include)
+target_include_directories(UplinkDecompiled PRIVATE Include ../tcp4u.331/Include)
 
 if(${GAME_ARCH} STREQUAL "x86")
-set_target_properties(UplinkDecompiled PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+set_target_properties(UplinkDecompiled PROPERTIES COMPILE_FLAGS "-m32 -Wall -Wextra" LINK_FLAGS "-m32")
 endif()
 
 add_custom_target(run

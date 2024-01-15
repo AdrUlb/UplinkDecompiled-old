@@ -7,6 +7,9 @@
 #include <signal.h>
 #include <string.h>
 
+#define buildVersionString "1.55"
+#define buildTypeString "RELEASE"
+
 static void SignalHandler(int signum)
 {
 	const auto sigdescr = sigdescr_np(signum);
@@ -32,7 +35,7 @@ static void Init_App(const char* path)
 
 	UplinkSnprintf(buildTime, sizeof(buildTime), "%s at %s", __DATE__, __TIME__);
 
-	gApp->Set(dir, "1.55", "RELEASE", buildTime, "Uplink");
+	gApp->Set(dir, buildVersionString, "RELEASE", buildTime, "Uplink");
 
 	if (dir)
 		delete[] dir;
@@ -56,14 +59,15 @@ static void Init_App(const char* path)
 
 	MakeDirectory(gApp->UsersOldPath);
 
-	UplinkSnprintf(debugLogFileName, sizeof(debugLogFileName), "%sdebug.log", gApp->UsersPath);
+	// TODO: reenable debug.log file
+	/*UplinkSnprintf(debugLogFileName, sizeof(debugLogFileName), "%sdebug.log", gApp->UsersPath);
 
 	file_stdout = nullptr;
 	const auto fdstdout = dup(fileno(stdout));
 	if (fdstdout != -1)
 		file_stdout = fdopen(fdstdout, "a");
 
-	/*if (!freopen(debugLogFileName, "a", stdout))
+	if (!freopen(debugLogFileName, "a", stdout))
 		printf("WARNING : Failed to open %s for writing stdout\n", debugLogFileName);
 
 	if (!freopen(debugLogFileName, "a", stderr))
@@ -77,7 +81,7 @@ static void Init_App(const char* path)
 		   "NEW GAME     %d:%d, %d/%d/%d\n"
 		   "===============================================\n"
 		   "Version : %s\n"
-		   "RELEASE\n"
+		   buildTypeString"\n"
 		   "Linux Build\n"
 		   "%s\n"
 		   "Path : %s\n",
@@ -93,7 +97,7 @@ static void RunUplink(const int argc, char* argv[])
 {
 	if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'v')
 	{
-		puts("1.55");
+		puts(buildVersionString);
 		return;
 	}
 

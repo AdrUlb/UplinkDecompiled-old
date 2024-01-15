@@ -91,8 +91,5 @@ void App::Initialise()
 	options->CreateDefaultOptions();
 	initTime = EclGetAccurateTime();
 	mainMenu = new MainMenu();
-	// TODO: fix ugly hack until Network is implemented, definitely UB and only works for x64
-	// network = new Network();
-	network = (Network*)new char[0x68];
-	Network__Network(network);
+	network = new Network();
 }
