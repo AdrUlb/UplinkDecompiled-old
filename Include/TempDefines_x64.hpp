@@ -2,6 +2,7 @@
 
 #include <App.hpp>
 #include <Options.hpp>
+#include <cstddef>
 #include <cstdint>
 #include <cstdio>
 
@@ -36,10 +37,16 @@ static const auto Init_OpenGL = (void (*)(void))0x0049FEF0;
 static const auto Run_MainMenu = (void (*)(void))0x0049FD40;
 static const auto Run_Game = (void (*)(void))0x0049FD30;
 static const auto Cleanup_Uplink = (void (*)(void))0x0049FCA0;
-static const auto DeleteBTreeDataImpl = (void (*)(BTree<UplinkObject*>*))0x004111F0;
+static const auto DeleteBTreeData = (void (*)(BTree<UplinkObject*>*))0x004111F0;
 static const auto EclGetAccurateTime = (double (*)(void))0x0050DBC0;
+static const auto LoadBTree = (bool (*)(BTree<UplinkObject*>*, FILE*))0x00411D70;
 
 static const auto BglCloseAllFiles = (void (*)(void))0x00513740;
+static const auto RsFileEncryptedNoVerify = (bool (*)(char*))0x00512CD0;
+static const auto RsFileEncrypted = (bool (*)(char*))0x00512D90;
+static const auto RsFileOpen = (FILE * (*)(char*, char*))0x00513070;
+static const auto RsFileClose = (void (*)(char*, FILE*))0x00512930;
+static const auto FileReadDataInt = (bool (*)(char*, unsigned int, void*, size_t, size_t, FILE* file))0x0040F630;
 
 static const auto App__Close = (void (*)(App*))0x00407230;
 static const auto App__Print = (void (*)(App*))0x00406D30;

@@ -63,11 +63,11 @@ static void Init_App(const char* path)
 	if (fdstdout != -1)
 		file_stdout = fdopen(fdstdout, "a");
 
-	if (!freopen(debugLogFileName, "a", stdout))
+	/*if (!freopen(debugLogFileName, "a", stdout))
 		printf("WARNING : Failed to open %s for writing stdout\n", debugLogFileName);
 
 	if (!freopen(debugLogFileName, "a", stderr))
-		printf("WARNING : Failed to open %s for writing stderr\n", debugLogFileName);
+		printf("WARNING : Failed to open %s for writing stderr\n", debugLogFileName);*/
 
 	const auto currentTime = time((time_t*)0x0);
 	const auto localTime = localtime(&currentTime);

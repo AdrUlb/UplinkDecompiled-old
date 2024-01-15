@@ -87,11 +87,11 @@ void App::Set(const char* path, const char* version, const char* type, const cha
 void App::Initialise()
 {
 	options = new Options();
-	options->Load();
+	options->Load(nullptr);
 	options->CreateDefaultOptions();
 	initTime = EclGetAccurateTime();
 	mainMenu = new MainMenu();
-	// TODO: fix ugly hack until Network is implemented, definitely UB
+	// TODO: fix ugly hack until Network is implemented, definitely UB and only works for x64
 	// network = new Network();
 	network = (Network*)new char[0x68];
 	Network__Network(network);

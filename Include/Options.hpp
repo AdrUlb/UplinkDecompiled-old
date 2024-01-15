@@ -12,7 +12,7 @@ class Option : UplinkObject
 public:
 	Option();
 	virtual ~Option() override;
-	virtual bool Load() override;
+	virtual bool Load(FILE* file) override;
 	virtual void Save() override;
 	virtual void Print() override;
 	virtual void Update() override;
@@ -40,7 +40,7 @@ public:
 	void CreateDefaultOptions();
 	virtual ~Options() override;
 
-	virtual bool Load() override;
+	virtual bool Load(FILE* file) override;
 private:
 	virtual void Save() override;
 	virtual void Print() override;
