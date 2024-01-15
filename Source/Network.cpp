@@ -11,7 +11,8 @@ NetworkServer::~NetworkServer()
 
 void NetworkServer::Print()
 {
-	NetworkServer__Print(this);
+	printf("NetworkServer : listensocket:%d, lastlisten:%d\n", socket, lastListen);
+	PrintDArray((DArray<UplinkObject*>*)&connections);
 }
 
 void NetworkServer::Update()
@@ -40,7 +41,8 @@ NetworkClient::~NetworkClient()
 
 void NetworkClient::Print()
 {
-	NetworkClient__Print(this);
+	printf("NetworkClient : SOCKET:%d\n", socket);
+	printf("\tcurrent screen:%d\n", screenId);
 }
 
 void NetworkClient::Update()
@@ -67,7 +69,18 @@ Network::~Network()
 
 void Network::Print()
 {
-	Network__Print(this);
+	puts("============== N E T W O R K ===============================");
+	printf("Status:%d\n", status);
+	switch (status)
+	{
+		case 1:
+			GetClient()->Print();
+			break;
+		case 2:
+			GetServer()->Print();
+			break;
+	}
+	puts("============== E N D  O F  N E T W O R K ===================");
 }
 
 void Network::Update()

@@ -49,4 +49,16 @@ public:
 	virtual void Print() override;
 	virtual void Update() override;
 	virtual const char* GetID() override;
+
+	inline NetworkServer* GetServer()
+	{
+		UplinkAssert(status == 2);
+		return &server;
+	}
+
+	inline NetworkClient* GetClient()
+	{
+		UplinkAssert(status == 1);
+		return &client;
+	}
 };

@@ -53,3 +53,32 @@ void EmptyDirectory(const char* path)
 
 	closedir(dir);
 }
+
+void PrintDArray(DArray<UplinkObject*>* array)
+{
+	UplinkObject* item;
+	UplinkObject* plVar4;
+
+	UplinkAssert(array);
+
+	for (auto i = 0; i < array->Size(); i++)
+	{
+		printf("Index = %d\n", i);
+
+		if (!array->ValidIndex(i))
+		{
+			puts("Not a Valid Index");
+			continue;
+		}
+
+		item = array->GetData(i);
+
+		if (!item)
+		{
+			puts("NULL");
+			continue;
+		}
+
+		item->Print();
+	}
+}

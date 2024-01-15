@@ -18,7 +18,7 @@
 				   " Source size : %d\n"                                                                                                   \
 				   " Str. Source : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, num, len, src);                                                                                     \
-			*(int*)0 = 0;                                                                                                                  \
+			*(volatile int*)0 = 0;                                                                                                         \
 		}                                                                                                                                  \
 		strncpy(dest, src, num);                                                                                                           \
 	}
@@ -32,7 +32,7 @@
 				   " Condition : %s\n"                                                                                                     \
 				   " Location  : %s, line %d\n",                                                                                           \
 				   #condition, __FILE__, __LINE__);                                                                                        \
-			*(int*)0 = 0;                                                                                                                  \
+			*(volatile int*)0 = 0;                                                                                                         \
 		}                                                                                                                                  \
 	}
 
@@ -46,10 +46,13 @@
 				   " Format      : %s\n"                                                                                                   \
 				   " Buffer      : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, bufferSize, format, buffer);                                                                        \
-			*(int*)0 = 0;                                                                                                                  \
+			*(volatile int*)0 = 0;                                                                                                         \
 		}                                                                                                                                  \
 		buffer[bufferSize - 1] = 0;                                                                                                        \
 	}
+
+#include <DArray.hpp>
+#include <UplinkObject.hpp>
 
 static inline bool DoesFileExist(const char* path)
 {
@@ -64,3 +67,5 @@ static inline void MakeDirectory(char* path)
 char* GetFilePath(const char* path);
 
 void EmptyDirectory(const char* path);
+
+void PrintDArray(DArray<UplinkObject*>* array);

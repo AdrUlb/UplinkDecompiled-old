@@ -59,13 +59,8 @@ static const auto Options__Save = (void (*)(Options*))0x080FAC20;
 static const auto Options__Print = (void (*)(Options*))0x080FABE0;
 static const auto Options__CreateDefaultOptions = (void (*)(Options*))0x080FB980;
 
-static const auto Network__Print = (void (*)(Network*))0x080F8780;
 static const auto Network__Update = (void (*)(Network*))0x080F8730;
-
-static const auto NetworkClient__Print = (void (*)(NetworkClient*))0x080F8E50;
 static const auto NetworkClient__Update = (void (*)(NetworkClient*))0x080F9480;
-
-static const auto NetworkServer__Print = (void (*)(NetworkServer*))0x080F9D40;
 static const auto NetworkServer__Update = (void (*)(NetworkServer*))0x080F9C10;
 
 static const auto MainMenu__Update = (bool (*)(MainMenu*))0x080EC330;

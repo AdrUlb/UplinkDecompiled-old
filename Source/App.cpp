@@ -5,13 +5,13 @@
 
 App::App()
 {
-	UplinkStrncpy(this->Path, "c:/", PathMax);
-	UplinkStrncpy(this->UsersPath, this->Path, PathMax);
-	UplinkStrncpy(this->Version, "1.31c", VersionMax);
-	UplinkStrncpy(this->Type, "RELEASE", TypeMax);
-	UplinkStrncpy(this->Date, "01/01/97", DateMax);
-	UplinkStrncpy(this->Title, "NewApp", TitleMax);
-	UplinkStrncpy(this->Build, "Version 1.0 (RELEASE), Compiled on 01/01/97", BuildMax);
+	UplinkStrncpy(Path, "c:/", PathMax);
+	UplinkStrncpy(UsersPath, Path, PathMax);
+	UplinkStrncpy(Version, "1.31c", VersionMax);
+	UplinkStrncpy(Type, "RELEASE", TypeMax);
+	UplinkStrncpy(Date, "01/01/97", DateMax);
+	UplinkStrncpy(Title, "NewApp", TitleMax);
+	UplinkStrncpy(Build, "Version 1.0 (RELEASE), Compiled on 01/01/97", BuildMax);
 	initTime = 0;
 	options = nullptr;
 	network = nullptr;
@@ -25,9 +25,7 @@ App::App()
 App::~App()
 {
 	if (!closed)
-	{
 		App__Close(this);
-	}
 }
 
 void App::Print()
