@@ -14,8 +14,8 @@
 			printf("\nAn Uplink strncpy Failure has occured\n"                                                                             \
 				   "=====================================\n"                                                                               \
 				   " Location    : %s, line %d\n"                                                                                          \
-				   " Dest. size  : %d\n"                                                                                                   \
-				   " Source size : %d\n"                                                                                                   \
+				   " Dest. size  : %zu\n"                                                                                                   \
+				   " Source size : %zu\n"                                                                                                   \
 				   " Str. Source : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, num, len, src);                                                                                     \
 			*(volatile int*)0 = 0;                                                                                                         \
@@ -42,7 +42,7 @@
 		{                                                                                                                                  \
 			printf("\nAn Uplink snprintf Failure has occured\n======================================\n"                                    \
 				   " Location    : %s, line %d\n"                                                                                          \
-				   " Buffer size : %d\n"                                                                                                   \
+				   " Buffer size : %zu\n"                                                                                                   \
 				   " Format      : %s\n"                                                                                                   \
 				   " Buffer      : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, bufferSize, format, buffer);                                                                        \
