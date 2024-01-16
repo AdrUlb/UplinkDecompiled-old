@@ -43,12 +43,6 @@ static const auto LoadBTree = (bool (*)(BTree<UplinkObject*>*, FILE*))0x08059460
 
 static const auto BglCloseAllFiles = (void (*)(void))0x0817DF90;
 static const auto FileReadDataInt = (bool (*)(const char*, unsigned int, void*, size_t, size_t, FILE*))0x080568B0;
-static const auto filterFile =
-	(bool (*)(const char*, char*, bool (*)(FILE*), bool (*)(FILE*), bool (*)(FILE*), void (*)(unsigned char*, unsigned int)))0x0817D7C0;
-static const auto readRsEncryptedHeader = (bool (*)(FILE*))0x0817D460;
-static const auto noHeader = (bool (*)(FILE*))0x0817CE20;
-static const auto decryptBuffer = (void (*)(unsigned char*, unsigned int))0x0817CE00;
-static const auto RsFileCheckSum = (__attribute__((regparm(3))) unsigned int (*)(FILE*, unsigned char*, unsigned int))0x0817D570;
 
 static const auto App__Close = (void (*)(App*))0x0804D5B0;
 static const auto App__Print = (void (*)(App*))0x0804D060;

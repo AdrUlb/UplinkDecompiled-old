@@ -1,4 +1,5 @@
 #include <TempDefines.hpp>
+#include <RedShirt.hpp>
 #include <cstdint>
 #include <sys/mman.h>
 

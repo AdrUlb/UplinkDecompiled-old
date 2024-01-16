@@ -32,6 +32,7 @@ add_library(UplinkDecompiled SHARED
 	Source/Util.cpp)
 
 target_include_directories(UplinkDecompiled PRIVATE Include ../tcp4u.331/Include)
+target_link_libraries(UplinkDecompiled PRIVATE -lssl -lcrypto)
 
 if(${GAME_ARCH} STREQUAL "x86")
 set_target_properties(UplinkDecompiled PROPERTIES COMPILE_FLAGS "-m32 -Wall -Wextra" LINK_FLAGS "-m32")
