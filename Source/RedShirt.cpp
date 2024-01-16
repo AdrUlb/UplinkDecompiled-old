@@ -92,6 +92,7 @@ static bool FileExists(const char* path)
 
 static bool noHeader(FILE* file)
 {
+	(void)file;
 	return true;
 }
 
