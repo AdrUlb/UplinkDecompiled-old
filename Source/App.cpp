@@ -51,30 +51,30 @@ void App::Set(const char* path, const char* version, const char* type, const cha
 	UplinkAssert(strlen(type) < TypeMax);
 	UplinkAssert(strlen(date) < DateMax);
 	UplinkAssert(strlen(title) < TitleMax);
-	UplinkStrncpy(this->Path, path, PathMax);
-	UplinkStrncpy(this->Version, version, VersionMax);
-	UplinkStrncpy(this->Type, type, TypeMax);
-	UplinkStrncpy(this->Date, date, DateMax);
-	UplinkStrncpy(this->Title, title, TitleMax);
+	UplinkStrncpy(Path, path, PathMax);
+	UplinkStrncpy(Version, version, VersionMax);
+	UplinkStrncpy(Type, type, TypeMax);
+	UplinkStrncpy(Date, date, DateMax);
+	UplinkStrncpy(Title, title, TitleMax);
 	// TODO: remove base game compile date
-	UplinkSnprintf(this->Build, BuildMax,
+	UplinkSnprintf(Build, BuildMax,
 				   "Version %s (%s)\n"
 				   "Base compiled on %s at %s\n"
 				   "Compiled on %s\n",
-				   this->Version, this->Type, baseCompileDate, baseCompileTime, this->Date);
+				   Version, Type, baseCompileDate, baseCompileTime, Date);
 
 	auto homeDir = getenv("HOME");
 	if (homeDir)
 	{
-		UplinkSnprintf(this->UsersPath, PathMax, "%s/.uplink/", homeDir);
-		UplinkSnprintf(this->UsersTempPath, PathMax, "%s/.uplink/userstmp/", homeDir);
-		UplinkSnprintf(this->UsersOldPath, PathMax, "%s/.uplink/usersold/", homeDir);
+		UplinkSnprintf(UsersPath, PathMax, "%s/.uplink/", homeDir);
+		UplinkSnprintf(UsersTempPath, PathMax, "%s/.uplink/userstmp/", homeDir);
+		UplinkSnprintf(UsersOldPath, PathMax, "%s/.uplink/usersold/", homeDir);
 	}
 	else
 	{
-		UplinkSnprintf(this->UsersPath, PathMax, "%susers/", this->Path);
-		UplinkSnprintf(this->UsersTempPath, PathMax, "%suserstmp/", this->Path);
-		UplinkSnprintf(this->UsersOldPath, PathMax, "%susersold/", this->Path);
+		UplinkSnprintf(UsersPath, PathMax, "%susers/", Path);
+		UplinkSnprintf(UsersTempPath, PathMax, "%suserstmp/", Path);
+		UplinkSnprintf(UsersOldPath, PathMax, "%susersold/", Path);
 	}
 }
 
