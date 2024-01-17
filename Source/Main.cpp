@@ -100,18 +100,14 @@ static void Init_App(const char* path)
 
 static void Init_Options(const int argc, char* argv[])
 {
-	char* optionName;
-	char prefix;
-	char* arg;
-
 	const auto options = gApp->GetOptions();
 
 		for (auto i = 1; i < argc; i++)
 		{
-			arg = argv[i];
-			prefix = arg[0];
+			const auto arg = argv[i];
+			const auto prefix = arg[0];
 
-			optionName = arg + 1;
+			const auto optionName = arg + 1;
 			switch (prefix)
 			{
 				case '+':
