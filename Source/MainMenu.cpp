@@ -3,6 +3,7 @@
 #include <TempDefines.hpp>
 
 MainMenu::MainMenu() : screenCode(0), screen(nullptr) {}
+
 MainMenu::~MainMenu()
 {
 	if (screen)

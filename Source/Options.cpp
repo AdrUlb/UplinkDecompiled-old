@@ -75,7 +75,7 @@ Options::Options()
 Options::~Options()
 {
 	DeleteBTreeData((BTree<UplinkObject*>*)&options);
-	
+
 	const auto colourOptionsArr = colourOptions.ConvertToDArray();
 
 	for (auto index = 0; index < colourOptionsArr->Size(); index++)
@@ -228,6 +228,7 @@ void Options::CreateDefaultOptions()
 Option* Options::GetOption(const char* name)
 {
 	const auto branch = options.LookupTree(name);
+
 	if (!branch)
 		return nullptr;
 
@@ -237,11 +238,39 @@ Option* Options::GetOption(const char* name)
 int Options::GetOptionValue(const char* name)
 {
 	const auto option = GetOption(name);
+	
 	if (!option)
 	{
 		char buffer[0x100];
 		UplinkSnprintf(buffer, sizeof(buffer), "Option %s not found", name);
 		UplinkAbort(buffer);
 	}
+
 	return option->Value;
+}
+
+void Options::SetOptionValue(const char* name, const int value)
+{
+	const auto optionTree = options.LookupTree(name);
+
+	if (!optionTree)
+	{
+		printf("Tried to set unrecognised option: %s\n", name);
+		return;
+	}
+
+	const auto option = optionTree->Value;
+
+	UplinkAssert(option);
+	option->SetValue(value);
+}
+
+bool Options::IsOptionEqualTo(const char* name, const int value)
+{
+	Option* option = GetOption(name);
+
+	if (!option)
+		return false;
+
+	return option->Value == value;
 }

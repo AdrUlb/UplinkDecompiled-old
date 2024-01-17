@@ -21,11 +21,17 @@ static const auto gRsTempDir = (char*)0x007B2100;
 static const auto gRsInitialisedPtr = (bool*)0x007B3895;
 #define gRsInitialised (*gRsInitialisedPtr)
 
+static const auto gWindowScaleXPtr = (float*)0x007B08C8;
+#define gWindowScaleX (*gWindowScaleXPtr)
+
+static const auto gWindowScaleYPtr = (float*)0x007B08C4;
+#define gWindowScaleY (*gWindowScaleYPtr)
+
 static const auto baseCompileDate = (const char*)0x005448F8;
 static const auto baseCompileTime = (const char*)0x005448EF;
 
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x004A0F60;
-static const auto Init_Options = (void (*)(int, char**))0x004A0590;
+//static const auto Init_Options = (void (*)(int, char**))0x004A0590;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x004A07E0;
 static const auto Load_Data = (bool (*)(void))0x004A04A0;
 static const auto Init_Game = (void (*)(void))0x004A0390;

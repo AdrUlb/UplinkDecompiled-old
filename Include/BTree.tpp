@@ -10,41 +10,37 @@ template <typename T> BTree<T>::BTree(const char* key, const T* const value) : l
 
 template <typename T> BTree<T>* BTree<T>::LookupTree(const char* key)
 {
-	BTree<T>* lastBranch;
-	auto currentBranch = this;
-	int cmp;
+	BTree<T>* piVar2;
 
-	do
+	auto current = this;
+
+	while (current->key)
 	{
-		do
+		auto cmp = strcmp(key, current->key);
+
+		// Next node is left
+		if (cmp < 0)
 		{
-			// The current branch does not have a key
-			if (!currentBranch->key)
+			if (!current->left)
 				return nullptr;
 
-			cmp = strcmp(key, currentBranch->key);
+			current = current->left;
+			continue;
+		}
 
-			// The current branch matches the key
-			if (cmp == 0)
-				return currentBranch;
+		// Next node is right
+		if (cmp > 0)
+		{
+			if (!current->right)
+				return nullptr;
 
-			// There is no left path
-			if (!currentBranch->left)
-				break;
+			current = current->right;
+			continue;
+		}
 
-			lastBranch = currentBranch;
-			currentBranch = currentBranch->left;
-		} while (cmp < 0); // Loop while the next branch is to the left
-
-		if (!lastBranch->right)
-			return nullptr;
-
-		currentBranch = lastBranch->right;
-
-	} while (cmp > 0); // Loop while the next branch is to the right
-
-	// The next branch was neither left nor right but also not the last branch, value not found
-	return nullptr;
+		// This node matches the key
+		return current;
+	}
 }
 
 template <typename T> DArray<T>* BTree<T>::ConvertToDArray()

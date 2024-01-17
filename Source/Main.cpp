@@ -24,6 +24,13 @@ static void SignalHandler(int signum)
 	RunUplinkExceptionHandling();
 }
 
+static void SetWindowScaleFactor(float x, float y)
+{
+	gWindowScaleX = x;
+	gWindowScaleY = y;
+	return;
+}
+
 static void Init_App(const char* path)
 {
 	char buildTime[0x20];
@@ -91,95 +98,63 @@ static void Init_App(const char* path)
 	return;
 }
 
-/*static void Init_Options(const int argc, char* argv[])
+static void Init_Options(const int argc, char* argv[])
 {
-	char* pcVar1;
-	char cVar2;
-	char* pcVar3;
-	bool bVar4;
-	Options* pOVar5;
-	int iVar6;
-	int iVar7;
-	int local_14;
+	char* optionName;
+	char prefix;
+	char* arg;
 
-	if (1 < argc)
-	{
-		iVar7 = 1;
-		do
+	const auto options = gApp->GetOptions();
+
+		for (auto i = 1; i < argc; i++)
 		{
-			while (true)
+			arg = argv[i];
+			prefix = arg[0];
+
+			optionName = arg + 1;
+			switch (prefix)
 			{
-				pcVar3 = argv[iVar7];
-				cVar2 = *pcVar3;
-				if (cVar2 != '\0')
+				case '+':
+					options->SetOptionValue(optionName, 1);
 					break;
-			LAB_080fe4a8:
-				iVar7 = iVar7 + 1;
-				printf("Error parsing command line option : %s\n", pcVar3);
-				if (argc <= iVar7)
-					goto LAB_080fe4c0;
+				case '-':
+					options->SetOptionValue(optionName, 0);
+					break;
+				case '!':
+					i++;
+
+					if (i >= argc)
+					{
+						printf("Error parsing command line option : %s\n", arg);
+						break;
+					}
+
+					int value;
+					sscanf(argv[i], "%d", &value);
+					options->SetOptionValue(optionName, value);
+					break;
+				default:
+					printf("Error parsing command line option : %s\n", arg);
+					continue;
 			}
-			pcVar1 = pcVar3 + 1;
-			if (cVar2 == '+')
-			{
-				pOVar5 = App::GetOptions(gApp);
-				Options::SetOptionValue(pOVar5, pcVar1, 1);
-			}
-			else if (cVar2 == '-')
-			{
-				pOVar5 = App::GetOptions(gApp);
-				Options::SetOptionValue(pOVar5, pcVar1, 0);
-			}
-			else
-			{
-				if (cVar2 != '!')
-					goto LAB_080fe4a8;
-				iVar6 = iVar7 + 1;
-				if (iVar6 < argc)
-				{
-					sscanf(argv[iVar6], "%d", &local_14);
-					iVar7 = local_14;
-					pOVar5 = App::GetOptions(gApp);
-					Options::SetOptionValue(pOVar5, pcVar1, iVar7);
-					iVar7 = iVar6;
-				}
-				else
-				{
-					printf("Error parsing command line option : %s\n", argv[iVar7]);
-					iVar7 = iVar6;
-				}
-			}
-			iVar7 = iVar7 + 1;
-		} while (iVar7 < argc);
-	}
-LAB_080fe4c0:
-	pOVar5 = gApp->GetOptions();
-	iVar7 = pOVar5->GetOptionValue("graphics_safemode");
-	if (iVar7 == 1)
+		}
+
+	if (options->GetOptionValue("graphics_safemode"))
 	{
-		pOVar5 = App::GetOptions(gApp);
-		Options::SetOptionValue(pOVar5, "graphics_fullscreen", 0);
-		pOVar5 = App::GetOptions(gApp);
-		Options::SetOptionValue(pOVar5, "graphics_screenrefresh", 0xffffffff);
-		pOVar5 = App::GetOptions(gApp);
-		Options::SetOptionValue(pOVar5, "graphics_screendepth", 0xffffffff);
-		pOVar5 = App::GetOptions(gApp);
-		Options::SetOptionValue(pOVar5, "graphics_softwaremouse", 1);
+		options->SetOptionValue("graphics_fullscreen", 0);
+		options->SetOptionValue("graphics_screenrefresh", -1);
+		options->SetOptionValue("graphics_screendepth", -1);
+		options->SetOptionValue("graphics_softwaremouse", 1);
 	}
-	putchar(10);
-	pOVar5 = App::GetOptions(gApp);
-	iVar7 = Options::GetOptionValue(pOVar5, "graphics_screenheight");
-	pOVar5 = App::GetOptions(gApp);
-	iVar6 = Options::GetOptionValue(pOVar5, "graphics_screenwidth");
-	SetWindowScaleFactor((float)iVar6 / 640.0, (float)iVar7 / 480.0);
-	pOVar5 = App::GetOptions(gApp);
-	bVar4 = Options::IsOptionEqualTo(pOVar5, "game_debugstart", 1);
-	if (bVar4)
-	{
+	putchar('\n');
+
+	const auto width = options->GetOptionValue("graphics_screenwidth");
+	const auto height = options->GetOptionValue("graphics_screenheight");
+	SetWindowScaleFactor(width / 640.0f, height / 480.0f);
+
+	if (options->IsOptionEqualTo("game_debugstart", 1))
 		puts("=====DEBUGGING INFORMATION ENABLED=====");
-	}
-	return;
-}*/
+}
 
 static void Cleanup_Uplink()
 {

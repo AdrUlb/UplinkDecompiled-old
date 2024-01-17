@@ -22,6 +22,11 @@ public:
 	virtual void Print() override;
 	virtual const char* GetID() override;
 	virtual size_t GetOBJECTID() override;
+
+	inline void SetValue(int value)
+	{
+		Value = value;
+	}
 };
 
 class Options : UplinkObject
@@ -44,6 +49,8 @@ public:
 	void CreateDefaultOptions();
 	Option* GetOption(const char* name);
 	int GetOptionValue(const char* name);
+	void SetOptionValue(const char* name, int value);
+	bool IsOptionEqualTo(const char* name, int value);
 
 	virtual ~Options() override;
 	virtual bool Load(FILE* file) override;
