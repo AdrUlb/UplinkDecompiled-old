@@ -9,7 +9,11 @@ bool UplinkObject::Load(FILE* file)
 	return true;
 }
 
-void UplinkObject::Save() {}
+void UplinkObject::Save(FILE* file)
+{
+	(void)file;
+}
+
 void UplinkObject::Print() {}
 void UplinkObject::Update() {}
 
@@ -29,6 +33,16 @@ void UplinkObject::LoadID(FILE* file)
 }
 
 void UplinkObject::LoadID_END(FILE* file)
+{
+	(void)file;
+}
+
+void UplinkObject::SaveID(FILE* file)
+{
+	(void)file;
+}
+
+void UplinkObject::SaveID_END(FILE* file)
 {
 	(void)file;
 }

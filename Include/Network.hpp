@@ -7,6 +7,13 @@
 typedef void ClientConnection;
 typedef void NetworkScreen;
 
+enum class Status
+{
+	None,
+	Client,
+	Server
+};
+
 class NetworkServer : UplinkObject
 {
 	int socket;
@@ -41,7 +48,7 @@ class Network : UplinkObject
 {
 	NetworkServer server;
 	NetworkClient client;
-	int status;
+	Status status;
 
 public:
 	Network();
@@ -52,13 +59,13 @@ public:
 
 	inline NetworkServer* GetServer()
 	{
-		UplinkAssert(status == 2);
+		UplinkAssert(status == Status::Server);
 		return &server;
 	}
 
 	inline NetworkClient* GetClient()
 	{
-		UplinkAssert(status == 1);
+		UplinkAssert(status == Status::Client);
 		return &client;
 	}
 };

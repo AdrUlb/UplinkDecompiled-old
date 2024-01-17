@@ -55,9 +55,8 @@ const char* NetworkClient::GetID()
 	return "CLIENT";
 }
 
-Network::Network()
+Network::Network() : status(Status::None)
 {
-	status = 0;
 	if (Tcp4uInit() != TCP4U_SUCCESS)
 		puts("Network error : failed to initialise TCP");
 }
@@ -70,14 +69,16 @@ Network::~Network()
 void Network::Print()
 {
 	puts("============== N E T W O R K ===============================");
-	printf("Status:%d\n", status);
+	printf("Status:%d\n", static_cast<int>(status));
 	switch (status)
 	{
-		case 1:
+		case Status::Client:
 			GetClient()->Print();
 			break;
-		case 2:
+		case Status::Server:
 			GetServer()->Print();
+			break;
+		default:
 			break;
 	}
 	puts("============== E N D  O F  N E T W O R K ===================");

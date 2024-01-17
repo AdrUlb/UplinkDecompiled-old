@@ -4,43 +4,21 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-// Original decompiled sources suggest a redundant null terminator was written to the end of the string.
-// This is not required as strncpy pads the end of the buffer with zeros until num bytes have been written.
-#define UplinkStrncpy(dest, src, num)                                                                                                      \
-	{                                                                                                                                      \
-		const auto len = strlen(src);                                                                                                      \
-		if (len >= num)                                                                                                                    \
-		{                                                                                                                                  \
-			printf("\nAn Uplink strncpy Failure has occured\n"                                                                             \
-				   "=====================================\n"                                                                               \
-				   " Location    : %s, line %d\n"                                                                                          \
-				   " Dest. size  : %zu\n"                                                                                                  \
-				   " Source size : %zu\n"                                                                                                  \
-				   " Str. Source : %s\n",                                                                                                  \
-				   __FILE__, __LINE__, num, len, src);                                                                                     \
-			*(volatile int*)0 = 0;                                                                                                         \
-		}                                                                                                                                  \
-		strncpy(dest, src, num);                                                                                                           \
-	}
+char* UplinkStrncpyImpl(const char* file, size_t line, char* dest, const char* src, size_t num);
 
-#define UplinkAssert(condition)                                                                                                            \
-	{                                                                                                                                      \
-		if (!(condition))                                                                                                                  \
-		{                                                                                                                                  \
-			printf("\nAn Uplink Assertion Failure has occured\n"                                                                           \
-				   "=======================================\n"                                                                             \
-				   " Condition : %s\n"                                                                                                     \
-				   " Location  : %s, line %d\n",                                                                                           \
-				   #condition, __FILE__, __LINE__);                                                                                        \
-			*(volatile int*)0 = 0;                                                                                                         \
-		}                                                                                                                                  \
-	}
+void UplinkAssertImpl(const char* file, size_t line, const char* conditionString, bool condition);
+
+#define UplinkStrncpy(dest, src, num) UplinkStrncpyImpl(__FILE__, __LINE__, dest, src, num)
+
+#define UplinkAssert(condition) UplinkAssertImpl(__FILE__, __LINE__, #condition, condition)
 
 #define UplinkSnprintf(buffer, bufferSize, format, ...)                                                                                    \
 	{                                                                                                                                      \
 		if (bufferSize < 0 || (size_t)snprintf(buffer, bufferSize, format, __VA_ARGS__) >= (size_t)bufferSize)                             \
 		{                                                                                                                                  \
-			printf("\nAn Uplink snprintf Failure has occured\n======================================\n"                                    \
+			printf("\n"                                                                                                                    \
+				   "An Uplink snprintf Failure has occured\n"                                                                              \
+				   "======================================\n"                                                                              \
 				   " Location    : %s, line %d\n"                                                                                          \
 				   " Buffer size : %zu\n"                                                                                                  \
 				   " Format      : %s\n"                                                                                                   \
@@ -49,6 +27,17 @@
 			*(volatile int*)0 = 0;                                                                                                         \
 		}                                                                                                                                  \
 		buffer[bufferSize - 1] = 0;                                                                                                        \
+	}
+
+#define UplinkAbort(message)                                                                                                               \
+	{                                                                                                                                      \
+		printf("\n"                                                                                                                        \
+			   "Uplink has been forced to Abort\n"                                                                                         \
+			   "===============================\n"                                                                                         \
+			   " Message   : %s\n"                                                                                                         \
+			   " Location  : %s, line %d\n",                                                                                               \
+			   message, __FILE__, __LINE__);                                                                                               \
+		*(volatile int*)0 = 0;                                                                                                             \
 	}
 
 #include <DArray.hpp>

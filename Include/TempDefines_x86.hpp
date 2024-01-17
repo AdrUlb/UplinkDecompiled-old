@@ -48,8 +48,7 @@ static const auto App__Print = (void (*)(App*))0x0804D060;
 static const auto App__Update = (void (*)(App*))0x0804DAD0;
 static const auto App__Initialise = (void (*)(App*))0x0804EBD0;
 
-static const auto Options__Load = (bool (*)(Options*))0x080FB070;
-static const auto Options__Save = (void (*)(Options*))0x080FAC20;
+static const auto Options__Save = (void (*)(Options*, FILE*))0x080FAC20;
 static const auto Options__Print = (void (*)(Options*))0x080FABE0;
 static const auto Options__CreateDefaultOptions = (void (*)(Options*))0x080FB980;
 

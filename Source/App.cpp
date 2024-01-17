@@ -92,3 +92,9 @@ void App::Close()
 {
 	App__Close(this);
 }
+
+Options* App::GetOptions()
+{
+	UplinkAssert(options);
+	return options;
+}

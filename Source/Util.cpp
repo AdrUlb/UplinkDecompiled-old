@@ -2,6 +2,36 @@
 #include <dirent.h>
 #include <errno.h>
 
+char* UplinkStrncpyImpl(const char* file, const size_t line, char* dest, const char* src, const size_t num)
+{
+	const auto len = strlen(src);
+	if (len >= num)
+	{
+		printf("\nAn Uplink strncpy Failure has occured\n"
+			   "=====================================\n"
+			   " Location    : %s, line %zu\n"
+			   " Dest. size  : %zu\n"
+			   " Source size : %zu\n"
+			   " Str. Source : %s\n",
+			   file, line, num, len, src);
+		*(volatile int*)0 = 0;
+	}
+	return strncpy(dest, src, num);
+}
+
+void UplinkAssertImpl(const char* file, const size_t line, const char* conditionString, const bool condition)
+{
+	if (!(condition))
+	{
+		printf("\nAn Uplink Assertion Failure has occured\n"
+			   "=======================================\n"
+			   " Condition : %s\n"
+			   " Location  : %s, line %zu\n",
+			   conditionString, file, line);
+		*(volatile int*)0 = 0;
+	}
+}
+
 char* GetFilePath(const char* path)
 {
 	UplinkAssert(path);
@@ -89,6 +119,6 @@ bool FileReadDataIntImpl(const char* sourceFile, size_t sourceLine, void* buffer
 		printf("WARNING: FileReadDataInt, request read count is different then the actual read count, request=%zu, actual=%zu, errno=%d, "
 			   "%s:%zu\n",
 			   count, actualCount, errno, sourceFile, sourceLine);
-			   
+
 	return count == actualCount;
 }

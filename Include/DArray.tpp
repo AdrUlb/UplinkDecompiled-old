@@ -50,7 +50,6 @@ template <typename T> void DArray<T>::SetSize(int newSize)
 	}
 
 	const auto oldSize = size;
-	size = newSize;
 
 	const auto newData = new T[newSize];
 	const auto newDataValid = new bool[newSize];
@@ -75,33 +74,25 @@ template <typename T> void DArray<T>::SetSize(int newSize)
 
 	data = newData;
 	dataValid = newDataValid;
-	return;
+
+	size = newSize;
 }
 
-template <typename T> int DArray<T>::PutData(T* inValue)
+template <typename T> int DArray<T>::PutData(T& value)
 {
-	if (size == 0)
+	for (auto i = 0; i < size; i++)
 	{
-		SetSize(growSize);
-		data[0] = *inValue;
-		dataValid[0] = true;
-		return 0;
-	}
-
-	int i;
-	for (i = 0; dataValid[i] != false; i++)
-	{
-		if (i == size)
+		if (!dataValid[i])
 		{
-			const auto oldSize = size;
-			SetSize(oldSize + growSize);
-			data[oldSize] = *inValue;
-			dataValid[oldSize] = true;
-			return oldSize;
+			data[i] = value;
+			dataValid[i] = true;
+			return i;
 		}
 	}
 
-	data[i] = *inValue;
-	dataValid[i] = true;
-	return i;
+	const auto oldSize = size;
+	SetSize(oldSize + growSize);
+	data[oldSize] = value;
+	dataValid[oldSize] = true;
+	return oldSize;
 }

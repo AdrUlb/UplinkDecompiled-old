@@ -5,6 +5,68 @@
 constexpr auto saveVersion = "SAV62";
 constexpr auto minSaveVersion = "SAV56";
 
+Option::Option() : Name{0}, Tooltip{0}, YesOrNo(false), Visible(true), Value(0) {}
+
+Option::~Option() {}
+
+bool Option::Load(FILE* file)
+{
+	LoadID(file);
+
+	if (!FileReadDataInt(Name, sizeof(Name), 1, file))
+	{
+		Name[0] = 0;
+		return false;
+	}
+	Name[sizeof(Name) - 1] = 0;
+
+	if (!FileReadDataInt(Tooltip, sizeof(Tooltip), 1, file))
+	{
+		Tooltip[0] = 0;
+		return 0;
+	}
+	Tooltip[sizeof(Tooltip) - 1] = 0;
+
+	if (!FileReadDataInt(&YesOrNo, 1, 1, file))
+		return false;
+
+	if (!FileReadDataInt(&Visible, 1, 1, file))
+		return false;
+
+	if (!FileReadDataInt(&Value, 4, 1, file))
+		return false;
+
+	LoadID_END(file);
+	return true;
+}
+
+void Option::Save(FILE* file)
+{
+	SaveID(file);
+	fwrite(Name, sizeof(Name), 1, file);
+	fwrite(Tooltip, sizeof(Tooltip), 1, file);
+	fwrite(&YesOrNo, sizeof(YesOrNo), 1, file);
+	fwrite(&Visible, sizeof(Visible), 1, file);
+	fwrite(&Value, sizeof(Value), 1, file);
+	SaveID_END(file);
+}
+
+void Option::Print()
+{
+	printf("Option : name=%s, value=%d\n", Name, Value);
+	printf("\tYesOrNo=%d, Visible=%d\n", YesOrNo, Visible);
+}
+
+const char* Option::GetID()
+{
+	return "OPTION";
+}
+
+size_t Option::GetOBJECTID()
+{
+	return 8;
+}
+
 Options::Options()
 {
 	strncpy(themeName, "graphics", themeNameMax);
@@ -13,6 +75,7 @@ Options::Options()
 Options::~Options()
 {
 	DeleteBTreeData((BTree<UplinkObject*>*)&options);
+	
 	const auto colourOptionsArr = colourOptions.ConvertToDArray();
 
 	for (auto index = 0; index < colourOptionsArr->Size(); index++)
@@ -115,14 +178,41 @@ bool Options::Load(FILE* file)
 	return true;
 }
 
-void Options::Save()
+void Options::Save(FILE* file)
 {
-	return Options__Save(this);
+	Options__Save(this, file);
+	/*(void)file;
+	MakeDirectory(gApp->UsersPath);
+
+	char filePath[0x100];
+	UplinkSnprintf(filePath, sizeof(filePath), "%soptions", gApp->UsersPath);
+
+	printf("Saving uplink options to %s...", filePath);
+
+	auto optionsFile = fopen(filePath, "wb");
+
+	if (!optionsFile)
+	{
+		puts("failed");
+		return;
+	}
+
+	puts("success");
+	fwrite("SAV62", 6, 1, optionsFile);
+	UplinkObject::SaveID(optionsFile);
+	SaveBTree((BTree<UplinkObject>*)&options, optionsFile);
+	UplinkObject::SaveID_END(optionsFile);
+	fputc(L't', optionsFile);
+	size_t themeNameLength = strlen(themeName);
+	fwrite(&themeNameLength, sizeof(themeNameLength), 1, optionsFile);
+	fwrite(themeName, themeNameLength, 1, optionsFile);
+	fclose(optionsFile);
+	RsEncryptFile(filePath);*/
 }
 
 void Options::Print()
 {
-	return Options__Print(this);
+	Options__Print(this);
 }
 
 const char* Options::GetID()
@@ -133,4 +223,25 @@ const char* Options::GetID()
 void Options::CreateDefaultOptions()
 {
 	Options__CreateDefaultOptions(this);
+}
+
+Option* Options::GetOption(const char* name)
+{
+	const auto branch = options.LookupTree(name);
+	if (!branch)
+		return nullptr;
+
+	return branch->Value;
+}
+
+int Options::GetOptionValue(const char* name)
+{
+	const auto option = GetOption(name);
+	if (!option)
+	{
+		char buffer[0x100];
+		UplinkSnprintf(buffer, sizeof(buffer), "Option %s not found", name);
+		UplinkAbort(buffer);
+	}
+	return option->Value;
 }

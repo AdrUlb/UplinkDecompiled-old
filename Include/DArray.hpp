@@ -14,7 +14,7 @@ public:
 	~DArray();
 	void Empty();
 	void SetSize(int newSize);
-	int PutData(T* inValue);
+	int PutData(T& value);
 
 	inline int Size()
 	{
