@@ -14,8 +14,8 @@
 			printf("\nAn Uplink strncpy Failure has occured\n"                                                                             \
 				   "=====================================\n"                                                                               \
 				   " Location    : %s, line %d\n"                                                                                          \
-				   " Dest. size  : %zu\n"                                                                                                   \
-				   " Source size : %zu\n"                                                                                                   \
+				   " Dest. size  : %zu\n"                                                                                                  \
+				   " Source size : %zu\n"                                                                                                  \
 				   " Str. Source : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, num, len, src);                                                                                     \
 			*(volatile int*)0 = 0;                                                                                                         \
@@ -42,7 +42,7 @@
 		{                                                                                                                                  \
 			printf("\nAn Uplink snprintf Failure has occured\n======================================\n"                                    \
 				   " Location    : %s, line %d\n"                                                                                          \
-				   " Buffer size : %zu\n"                                                                                                   \
+				   " Buffer size : %zu\n"                                                                                                  \
 				   " Format      : %s\n"                                                                                                   \
 				   " Buffer      : %s\n",                                                                                                  \
 				   __FILE__, __LINE__, bufferSize, format, buffer);                                                                        \
@@ -69,3 +69,7 @@ char* GetFilePath(const char* path);
 void EmptyDirectory(const char* path);
 
 void PrintDArray(DArray<UplinkObject*>* array);
+
+bool FileReadDataIntImpl(const char* sourceFile, size_t sourceLine, void* buffer, size_t size, size_t count, FILE* file);
+
+#define FileReadDataInt(buffer, size, count, file) FileReadDataIntImpl(__FILE__, __LINE__, buffer, size, count, file)

@@ -25,7 +25,7 @@ App::App()
 App::~App()
 {
 	if (!closed)
-		App__Close(this);
+		Close();
 }
 
 void App::Print()
@@ -86,4 +86,9 @@ void App::Initialise()
 	initTime = EclGetAccurateTime();
 	mainMenu = new MainMenu();
 	network = new Network();
+}
+
+void App::Close()
+{
+	App__Close(this);
 }

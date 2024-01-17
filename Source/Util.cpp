@@ -1,5 +1,6 @@
 #include <Util.hpp>
 #include <dirent.h>
+#include <errno.h>
 
 char* GetFilePath(const char* path)
 {
@@ -78,4 +79,16 @@ void PrintDArray(DArray<UplinkObject*>* array)
 
 		item->Print();
 	}
+}
+
+bool FileReadDataIntImpl(const char* sourceFile, size_t sourceLine, void* buffer, size_t size, size_t count, FILE* file)
+{
+	const auto actualCount = fread(buffer, size, count, file);
+
+	if (count != actualCount)
+		printf("WARNING: FileReadDataInt, request read count is different then the actual read count, request=%zu, actual=%zu, errno=%d, "
+			   "%s:%zu\n",
+			   count, actualCount, errno, sourceFile, sourceLine);
+			   
+	return count == actualCount;
 }

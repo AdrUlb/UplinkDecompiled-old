@@ -40,6 +40,7 @@ public:
 	App();
 	void Set(const char* path, const char* version, const char* type, const char* date, const char* title);
 	void Initialise();
+	void Close();
 	virtual ~App() override;
 	virtual void Print() override;
 	virtual void Update() override;

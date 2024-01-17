@@ -33,7 +33,7 @@ bool Options::Load(FILE* file)
 	(void)file;
 	FILE* optionsFile;
 	char optionsFilePath[0x100];
-	char themeName[themeNameMax];
+	char themeName[themeNameMax + 4];
 	char saveVersion[0x20];
 
 	UplinkSnprintf(optionsFilePath, sizeof(optionsFilePath), "%soptions", gApp->UsersPath);
@@ -61,8 +61,8 @@ bool Options::Load(FILE* file)
 		return false;
 	}
 
-	if (!FileReadDataInt(__FILE__, __LINE__, saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 ||
-		strcmp(saveVersion, minSaveVersion) < 0 || strcmp(saveVersion, saveVersion) > 0)
+	if (!FileReadDataInt(saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, minSaveVersion) < 0 ||
+		strcmp(saveVersion, saveVersion) > 0)
 	{
 		puts("\nERROR : Could not load options due to incompatible version format");
 		if (fileEncrypted)
@@ -84,15 +84,24 @@ bool Options::Load(FILE* file)
 	}
 	LoadID_END(optionsFile);
 
-	// FIXME: loading a theme WILL fail if the size of size_t is different from the platform that saved it
-	size_t themeNameLength = 0;
+	// The size of themeNameLength in the file depends on the native integer size
+	// This code will work with either both 32-bit and 64-bit integers in this field
+	uint32_t themeNameLength = 0;
 	if ((fgetc(optionsFile) == 't' && fread(&themeNameLength, sizeof(themeNameLength), 1, optionsFile) == 1) &&
 		themeNameLength + 1 < themeNameMax)
 	{
 		if (fread(themeName, themeNameLength, 1, optionsFile) == 1)
 		{
-			themeName[themeNameLength] = 0;
-			UplinkStrncpy(this->themeName, themeName, themeNameMax);
+			auto fixedThemeName = themeName;
+
+			if (themeNameLength > 0 && themeName[0] == 0)
+			{
+				fread(fixedThemeName + themeNameLength, 4, 1, optionsFile);
+				fixedThemeName += 4;
+			}
+
+			fixedThemeName[themeNameLength] = 0;
+			UplinkStrncpy(this->themeName, fixedThemeName, themeNameMax);
 		}
 	}
 
