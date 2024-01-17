@@ -10,8 +10,6 @@ template <typename T> BTree<T>::BTree(const char* key, const T* const value) : l
 
 template <typename T> BTree<T>* BTree<T>::LookupTree(const char* key)
 {
-	BTree<T>* piVar2;
-
 	auto current = this;
 
 	while (current->key)
@@ -41,6 +39,8 @@ template <typename T> BTree<T>* BTree<T>::LookupTree(const char* key)
 		// This node matches the key
 		return current;
 	}
+
+	return nullptr;
 }
 
 template <typename T> DArray<T>* BTree<T>::ConvertToDArray()

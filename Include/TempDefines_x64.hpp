@@ -31,7 +31,6 @@ static const auto baseCompileDate = (const char*)0x005448F8;
 static const auto baseCompileTime = (const char*)0x005448EF;
 
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x004A0F60;
-//static const auto Init_Options = (void (*)(int, char**))0x004A0590;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x004A07E0;
 static const auto Load_Data = (bool (*)(void))0x004A04A0;
 static const auto Init_Game = (void (*)(void))0x004A0390;
