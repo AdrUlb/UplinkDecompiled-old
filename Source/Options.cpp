@@ -79,12 +79,13 @@ Options::~Options()
 
 	for (auto index = 0; index < colourOptionsArr->Size(); index++)
 	{
-		if (colourOptionsArr->ValidIndex(index))
-		{
-			const auto item = colourOptionsArr->GetData(index);
-			if (item)
-				delete item;
-		}
+		if (!colourOptionsArr->ValidIndex(index))
+			continue;
+
+		const auto item = colourOptionsArr->GetData(index);
+		
+		if (item)
+			delete item;
 	}
 
 	delete colourOptionsArr;

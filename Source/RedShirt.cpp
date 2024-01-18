@@ -167,7 +167,7 @@ static bool writeRsEncryptedCheckSum(FILE* file)
 
 	auto success = false;
 
-	if (hashSize != RedShirt::FileCheckSum(file, buffer, hashSize))
+	if (hashSize == RedShirt::FileCheckSum(file, buffer, hashSize))
 	{
 		fseek(file, 9, 0);
 		success = fwrite(buffer, hashSize, 1, file) == 1;
@@ -235,7 +235,7 @@ static bool filterFile(const char* path, const char* filteredPath, ReadHeaderCal
 
 	if (!writeChecksumCallback(filteredFile))
 	{
-		printf("redshirt: failed to write checksum!");
+		printf("redshirt: failed to write checksum!\n");
 		fclose(file);
 		fclose(filteredFile);
 		remove(filteredPath);
