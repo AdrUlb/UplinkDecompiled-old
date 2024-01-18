@@ -53,8 +53,7 @@ void Option::Save(FILE* file)
 
 void Option::Print()
 {
-	printf("Option : name=%s, value=%d\n", Name, Value);
-	printf("\tYesOrNo=%d, Visible=%d\n", YesOrNo, Visible);
+	printf("Option : name=%s, value=%d\n\tYesOrNo=%d, Visible=%d\n", Name, Value, YesOrNo, Visible);
 }
 
 const char* Option::GetID()
@@ -62,9 +61,9 @@ const char* Option::GetID()
 	return "OPTION";
 }
 
-size_t Option::GetOBJECTID()
+UplinkObjectId Option::GetOBJECTID()
 {
-	return 8;
+	return UplinkObjectId::Option;
 }
 
 Options::Options()
@@ -180,16 +179,15 @@ bool Options::Load(FILE* file)
 
 void Options::Save(FILE* file)
 {
-	Options__Save(this, file);
-	/*(void)file;
+	(void)file;
 	MakeDirectory(gApp->UsersPath);
 
-	char filePath[0x100];
-	UplinkSnprintf(filePath, sizeof(filePath), "%soptions", gApp->UsersPath);
+	char optionsFilePath[0x100];
+	UplinkSnprintf(optionsFilePath, sizeof(optionsFilePath), "%soptions", gApp->UsersPath);
 
-	printf("Saving uplink options to %s...", filePath);
+	printf("Saving uplink options to %s...", optionsFilePath);
 
-	auto optionsFile = fopen(filePath, "wb");
+	auto optionsFile = fopen(optionsFilePath, "wb");
 
 	if (!optionsFile)
 	{
@@ -198,16 +196,21 @@ void Options::Save(FILE* file)
 	}
 
 	puts("success");
-	fwrite("SAV62", 6, 1, optionsFile);
-	UplinkObject::SaveID(optionsFile);
-	SaveBTree((BTree<UplinkObject>*)&options, optionsFile);
-	UplinkObject::SaveID_END(optionsFile);
-	fputc(L't', optionsFile);
-	size_t themeNameLength = strlen(themeName);
+
+	fwrite(saveVersion, 6, 1, optionsFile);
+
+	SaveID(optionsFile);
+	SaveBTree((BTree<UplinkObject*>*)&options, optionsFile);
+	SaveID_END(optionsFile);
+
+	fputc('t', optionsFile);
+	const auto themeNameLength = strlen(themeName);
 	fwrite(&themeNameLength, sizeof(themeNameLength), 1, optionsFile);
 	fwrite(themeName, themeNameLength, 1, optionsFile);
+
 	fclose(optionsFile);
-	RsEncryptFile(filePath);*/
+
+	RedShirt::EncryptFile(optionsFilePath);
 }
 
 void Options::Print()
@@ -238,7 +241,7 @@ Option* Options::GetOption(const char* name)
 int Options::GetOptionValue(const char* name)
 {
 	const auto option = GetOption(name);
-	
+
 	if (!option)
 	{
 		char buffer[0x100];

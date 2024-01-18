@@ -21,6 +21,9 @@ bool FileReadDataImpl(const char* sourceFile, int sourceLine, void* buffer, size
 
 bool LoadDynamicStringImpl(const char* sourceFile, const int sourceLine, char*& buffer, FILE* file);
 
+void SaveDynamicString(const char* value, int maxSize, FILE* file);
+void SaveDynamicString(const char* value, FILE* file);
+
 #define UplinkStrncpy(dest, src, num) UplinkStrncpyImpl(__FILE__, __LINE__, dest, src, num)
 
 #define UplinkAssert(condition) UplinkAssertImpl(__FILE__, __LINE__, #condition, condition)

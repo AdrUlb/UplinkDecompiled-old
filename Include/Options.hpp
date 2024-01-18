@@ -21,7 +21,7 @@ public:
 	virtual void Save(FILE* file) override;
 	virtual void Print() override;
 	virtual const char* GetID() override;
-	virtual size_t GetOBJECTID() override;
+	virtual UplinkObjectId GetOBJECTID() override;
 
 	inline void SetValue(int value)
 	{

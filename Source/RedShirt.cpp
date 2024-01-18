@@ -96,7 +96,7 @@ static bool noHeader(FILE* file)
 	return true;
 }
 
-static bool filterStream(FILE* file, FILE* filterFile, WriteDataCallback writeDataCallback)
+static bool filterStream(FILE* file, FILE* filteredFile, WriteDataCallback writeDataCallback)
 {
 	unsigned char readBuffer[0x4000];
 
@@ -112,7 +112,7 @@ static bool filterStream(FILE* file, FILE* filterFile, WriteDataCallback writeDa
 
 		writeDataCallback(readBuffer, readCount);
 
-		writeCount = fwrite(readBuffer, 1, readCount, filterFile);
+		writeCount = fwrite(readBuffer, 1, readCount, filteredFile);
 	} while (readCount <= writeCount);
 
 	return false;
@@ -141,13 +141,56 @@ static bool readRsEncryptedHeader(FILE* file)
 	return strcmp(signature, "REDSHIRT") == 0;
 }
 
-static void decryptBuffer(unsigned char* buffer, unsigned int count)
+static bool writeRsEncryptedHeader(FILE* file)
 {
-	for (unsigned int i = 0; i < count; i++)
+	if (fwrite("REDSHRT2", 9, 1, file) != 1)
+		return false;
+
+	const auto hashSize = HashResultSize();
+	const auto hash = new unsigned char[hashSize];
+
+	memset(hash, 0, hashSize);
+
+	auto success = fwrite(hash, hashSize, 1, file) == 1;
+
+	delete[] hash;
+
+	return success;
+}
+
+static bool writeRsEncryptedCheckSum(FILE* file)
+{
+	const auto hashSize = HashResultSize();
+	const auto buffer = new unsigned char[hashSize];
+
+	fseek(file, hashSize + 9, 0);
+
+	auto success = false;
+
+	if (hashSize != RedShirt::FileCheckSum(file, buffer, hashSize))
+	{
+		fseek(file, 9, 0);
+		success = fwrite(buffer, hashSize, 1, file) == 1;
+	}
+
+	delete[] buffer;
+
+	return success;
+}
+
+static void decryptBuffer(unsigned char* buffer, unsigned int size)
+{
+	for (unsigned int i = 0; i < size; i++)
 		buffer[i] += 0x80;
 }
 
-static bool filterFile(const char* path, const char* filterPath, ReadHeaderCallback readFileHeaderCallback,
+static void encryptBuffer(unsigned char* buffer, unsigned int size)
+{
+	for (unsigned int i = 0; i < size; i++)
+		buffer[i] += 0x80;
+}
+
+static bool filterFile(const char* path, const char* filteredPath, ReadHeaderCallback readHeaderCallback,
 					   WriteHeaderCallback writeHeaderCallback, WriteChecksumCallback writeChecksumCallback,
 					   WriteDataCallback writeDataCallback)
 {
@@ -157,51 +200,68 @@ static bool filterFile(const char* path, const char* filterPath, ReadHeaderCallb
 	if (!file)
 		return false;
 
-	if (!readFileHeaderCallback(file))
+	if (!readHeaderCallback(file))
 	{
 		printf("redshirt: failed to read header!");
 		fclose(file);
 		return false;
 	}
 
-	auto filterFile = fopen(filterPath, "w+b");
+	auto filteredFile = fopen(filteredPath, "w+b");
 
-	if (!filterFile)
+	if (!filteredFile)
 	{
 		fclose(file);
 		return false;
 	}
 
-	if (!writeHeaderCallback(filterFile))
+	if (!writeHeaderCallback(filteredFile))
 	{
 		printf("redshirt: failed to write header!");
 		fclose(file);
-		fclose(filterFile);
-		remove(filterPath);
+		fclose(filteredFile);
+		remove(filteredPath);
 		return false;
 	}
 
-	if (!filterStream(file, filterFile, writeDataCallback))
+	if (!filterStream(file, filteredFile, writeDataCallback))
 	{
 		printf("redshirt: failed to write containning bytes!");
 		fclose(file);
-		fclose(filterFile);
-		remove(filterPath);
+		fclose(filteredFile);
+		remove(filteredPath);
 		return false;
 	}
 
-	if (!writeChecksumCallback(filterFile))
+	if (!writeChecksumCallback(filteredFile))
 	{
 		printf("redshirt: failed to write checksum!");
 		fclose(file);
-		fclose(filterFile);
-		remove(filterPath);
+		fclose(filteredFile);
+		remove(filteredPath);
 		return false;
 	}
 
 	fclose(file);
-	fclose(filterFile);
+	fclose(filteredFile);
 	return true;
+}
+
+bool filterFileInPlace(const char* path, const char* filteredSuffix, ReadHeaderCallback readHeaderCallback,
+					   WriteHeaderCallback writeHeaderCallback, WriteChecksumCallback writeChecksumCallback,
+					   WriteDataCallback writeDataCallback)
+{
+	char buffer[0x100];
+
+	sprintf(buffer, "%s%s", path, filteredSuffix);
+	if (filterFile(path, buffer, readHeaderCallback, writeHeaderCallback, writeChecksumCallback, writeDataCallback))
+	{
+		remove(path);
+		rename(buffer, path);
+		return true;
+	}
+	puts("Redshirt ERROR : Failed to write output file");
+	return false;
 }
 
 void RedShirt::Initialise(const char* path)
@@ -365,4 +425,9 @@ bool RedShirt::FileEncrypted(const char* path)
 
 	fclose(file);
 	return success;
+}
+
+bool RedShirt::EncryptFile(const char* path)
+{
+	return filterFileInPlace(path, ".e", noHeader, writeRsEncryptedHeader, writeRsEncryptedCheckSum, encryptBuffer);
 }

@@ -22,9 +22,9 @@ const char* UplinkObject::GetID()
 	return "UOBJ";
 }
 
-size_t UplinkObject::GetOBJECTID()
+UplinkObjectId UplinkObject::GetOBJECTID()
 {
-	return 0;
+	return UplinkObjectId::Unassigned;
 }
 
 void UplinkObject::LoadID(FILE* file)

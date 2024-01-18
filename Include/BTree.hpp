@@ -17,7 +17,7 @@ public:
 	BTree<T>* LookupTree(const char* key);
 	void PutData(const char* key, T& value);
 	DArray<T>* ConvertToDArray();
-	DArray<const char*>* ConvertIndexToDArray();
+	DArray<char*>* ConvertIndexToDArray();
 
 	inline BTree<T>* Left()
 	{
@@ -36,5 +36,7 @@ private:
 
 bool LoadBTree(BTree<char*>* tree, FILE* file);
 bool LoadBTree(BTree<UplinkObject*>* tree, FILE* file);
+void SaveBTree(BTree<char*>* tree, FILE* file);
+void SaveBTree(BTree<UplinkObject*>* tree, FILE* file);
 
 #include <BTree.tpp>

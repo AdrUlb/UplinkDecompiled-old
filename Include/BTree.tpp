@@ -100,9 +100,9 @@ template <typename T> DArray<T>* BTree<T>::ConvertToDArray()
 	return array;
 }
 
-template <typename T> DArray<const char*>* BTree<T>::ConvertIndexToDArray()
+template <typename T> DArray<char*>* BTree<T>::ConvertIndexToDArray()
 {
-	auto array = new DArray<const char*>();
+	auto array = new DArray<char*>();
 	RecursiveConvertIndexToDArray(array, this);
 	return array;
 }
