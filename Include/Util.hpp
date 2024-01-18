@@ -4,44 +4,34 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-char* UplinkStrncpyImpl(const char* file, size_t line, char* dest, const char* src, size_t num);
+char* UplinkStrncpyImpl(const char* sourceFile, int sourceLine, char* dest, const char* src, size_t num);
 
-void UplinkAssertImpl(const char* file, size_t line, const char* conditionString, bool condition);
+void UplinkAssertImpl(const char* sourceFile, int sourceLine, const char* conditionString, bool condition);
+
+template <typename... T>
+void UplinkSnprintfImpl(const char* sourceFile, int line, char* buffer, size_t bufferSize, const char* format, T... params);
+
+void UplinkAbortImpl(const char* sourceFile, const int sourceLine, const char* message);
+
+char* GetFilePath(const char* path);
+
+void EmptyDirectory(const char* path);
+
+bool FileReadDataImpl(const char* sourceFile, int sourceLine, void* buffer, size_t size, size_t count, FILE* file);
+
+bool LoadDynamicStringImpl(const char* sourceFile, const int sourceLine, char*& buffer, FILE* file);
 
 #define UplinkStrncpy(dest, src, num) UplinkStrncpyImpl(__FILE__, __LINE__, dest, src, num)
 
 #define UplinkAssert(condition) UplinkAssertImpl(__FILE__, __LINE__, #condition, condition)
 
-#define UplinkSnprintf(buffer, bufferSize, format, ...)                                                                                    \
-	{                                                                                                                                      \
-		if (bufferSize < 0 || (size_t)snprintf(buffer, bufferSize, format, __VA_ARGS__) >= (size_t)bufferSize)                             \
-		{                                                                                                                                  \
-			printf("\n"                                                                                                                    \
-				   "An Uplink snprintf Failure has occured\n"                                                                              \
-				   "======================================\n"                                                                              \
-				   " Location    : %s, line %d\n"                                                                                          \
-				   " Buffer size : %zu\n"                                                                                                  \
-				   " Format      : %s\n"                                                                                                   \
-				   " Buffer      : %s\n",                                                                                                  \
-				   __FILE__, __LINE__, bufferSize, format, buffer);                                                                        \
-			*(volatile int*)0 = 0;                                                                                                         \
-		}                                                                                                                                  \
-		buffer[bufferSize - 1] = 0;                                                                                                        \
-	}
+#define UplinkSnprintf(buffer, bufferSize, format, ...) UplinkSnprintfImpl(__FILE__, __LINE__, buffer, bufferSize, format, __VA_ARGS__)
 
-#define UplinkAbort(message)                                                                                                               \
-	{                                                                                                                                      \
-		printf("\n"                                                                                                                        \
-			   "Uplink has been forced to Abort\n"                                                                                         \
-			   "===============================\n"                                                                                         \
-			   " Message   : %s\n"                                                                                                         \
-			   " Location  : %s, line %d\n",                                                                                               \
-			   message, __FILE__, __LINE__);                                                                                               \
-		*(volatile int*)0 = 0;                                                                                                             \
-	}
+#define UplinkAbort(message) UplinkAbortImpl(__FILE__, __LINE__, message)
 
-#include <DArray.hpp>
-#include <UplinkObject.hpp>
+#define FileReadData(buffer, size, count, file) FileReadDataImpl(__FILE__, __LINE__, buffer, size, count, file)
+
+#define LoadDynamicString(buffer, file) LoadDynamicStringImpl(__FILE__, __LINE__, buffer, file)
 
 static inline bool DoesFileExist(const char* path)
 {
@@ -53,12 +43,4 @@ static inline void MakeDirectory(char* path)
 	mkdir(path, 0700);
 }
 
-char* GetFilePath(const char* path);
-
-void EmptyDirectory(const char* path);
-
-void PrintDArray(DArray<UplinkObject*>* array);
-
-bool FileReadDataIntImpl(const char* sourceFile, size_t sourceLine, void* buffer, size_t size, size_t count, FILE* file);
-
-#define FileReadDataInt(buffer, size, count, file) FileReadDataIntImpl(__FILE__, __LINE__, buffer, size, count, file)
+#include <Util.tpp>

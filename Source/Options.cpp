@@ -13,27 +13,27 @@ bool Option::Load(FILE* file)
 {
 	LoadID(file);
 
-	if (!FileReadDataInt(Name, sizeof(Name), 1, file))
+	if (!FileReadData(Name, sizeof(Name), 1, file))
 	{
 		Name[0] = 0;
 		return false;
 	}
 	Name[sizeof(Name) - 1] = 0;
 
-	if (!FileReadDataInt(Tooltip, sizeof(Tooltip), 1, file))
+	if (!FileReadData(Tooltip, sizeof(Tooltip), 1, file))
 	{
 		Tooltip[0] = 0;
 		return 0;
 	}
 	Tooltip[sizeof(Tooltip) - 1] = 0;
 
-	if (!FileReadDataInt(&YesOrNo, 1, 1, file))
+	if (!FileReadData(&YesOrNo, 1, 1, file))
 		return false;
 
-	if (!FileReadDataInt(&Visible, 1, 1, file))
+	if (!FileReadData(&Visible, 1, 1, file))
 		return false;
 
-	if (!FileReadDataInt(&Value, 4, 1, file))
+	if (!FileReadData(&Value, 4, 1, file))
 		return false;
 
 	LoadID_END(file);
@@ -124,7 +124,7 @@ bool Options::Load(FILE* file)
 		return false;
 	}
 
-	if (!FileReadDataInt(saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, minSaveVersion) < 0 ||
+	if (!FileReadData(saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, minSaveVersion) < 0 ||
 		strcmp(saveVersion, saveVersion) > 0)
 	{
 		puts("\nERROR : Could not load options due to incompatible version format");

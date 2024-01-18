@@ -44,7 +44,7 @@ static const auto Run_Game = (void (*)(void))0x0049FD30;
 static const auto DeleteBTreeData = (void (*)(BTree<UplinkObject*>*))0x004111F0;
 static const auto DeleteDArrayDataD = (void (*)(DArray<UplinkObject*>*))0x00411B10;
 static const auto EclGetAccurateTime = (double (*)(void))0x0050DBC0;
-static const auto LoadBTree = (bool (*)(BTree<UplinkObject*>*, FILE*))0x00411D70;
+static const auto CreateUplinkObject = (UplinkObject*(*)(int))0x0040FF10;
 
 static const auto BglCloseAllFiles = (void (*)(void))0x00513740;
 

@@ -21,7 +21,9 @@ project(UplinkDecompiled)
 add_library(UplinkDecompiled SHARED
 	Source/App.cpp
 	Source/BinReloc.cpp
+	Source/BTree.cpp
 	Source/Bungle.cpp
+	Source/DArray.cpp
 	Source/LibMain.cpp
 	Source/Main.cpp
 	Source/MainMenu.cpp

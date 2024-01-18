@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <UplinkObject.hpp>
 
 template <typename T> class DArray
 {
@@ -31,5 +32,7 @@ public:
 
 	T GetData(int index);
 };
+
+void PrintDArray(DArray<UplinkObject*>* array);
 
 #include <DArray.tpp>

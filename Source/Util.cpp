@@ -1,35 +1,86 @@
 #include <Util.hpp>
 #include <dirent.h>
+#include <cstdint>
 #include <errno.h>
 
-char* UplinkStrncpyImpl(const char* file, const size_t line, char* dest, const char* src, const size_t num)
+char* UplinkStrncpyImpl(const char* sourceFile, const int sourceLine, char* dest, const char* src, const size_t num)
 {
 	const auto len = strlen(src);
 	if (len >= num)
 	{
 		printf("\nAn Uplink strncpy Failure has occured\n"
 			   "=====================================\n"
-			   " Location    : %s, line %zu\n"
+			   " Location    : %s, line %d\n"
 			   " Dest. size  : %zu\n"
 			   " Source size : %zu\n"
 			   " Str. Source : %s\n",
-			   file, line, num, len, src);
+			   sourceFile, sourceLine, num, len, src);
 		*(volatile int*)0 = 0;
 	}
 	return strncpy(dest, src, num);
 }
 
-void UplinkAssertImpl(const char* file, const size_t line, const char* conditionString, const bool condition)
+void UplinkAssertImpl(const char* sourceFile, const int sourceLine, const char* conditionString, const bool condition)
 {
 	if (!(condition))
 	{
 		printf("\nAn Uplink Assertion Failure has occured\n"
 			   "=======================================\n"
 			   " Condition : %s\n"
-			   " Location  : %s, line %zu\n",
-			   conditionString, file, line);
+			   " Location  : %s, line %d\n",
+			   conditionString, sourceFile, sourceLine);
 		*(volatile int*)0 = 0;
 	}
+}
+
+void UplinkAbortImpl(const char* sourceFile, const int sourceLine, const char* message)
+{
+	printf("\n"
+		   "Uplink has been forced to Abort\n"
+		   "===============================\n"
+		   " Message   : %s\n"
+		   " Location  : %s, line %d\n",
+		   message, sourceFile, sourceLine);
+	*(volatile int*)0 = 0;
+}
+
+bool FileReadDataImpl(const char* sourceFile, const int sourceLine, void* buffer, size_t size, size_t count, FILE* file)
+{
+	const auto actualCount = fread(buffer, size, count, file);
+
+	if (count != actualCount)
+		printf("WARNING: FileReadDataInt, request read count is different then the actual read count, request=%zu, actual=%zu, errno=%d, "
+			   "%s:%d\n",
+			   count, actualCount, errno, sourceFile, sourceLine);
+
+	return count == actualCount;
+}
+
+bool LoadDynamicStringImpl(const char* sourceFile, const int sourceLine, char*& buffer, FILE* file)
+{
+	buffer = nullptr;
+	int32_t length;
+	if (!FileReadData(&length, sizeof(length), 1, file))
+		return false;
+
+	if (length == -1)
+		return true;
+
+	if (length > 0x4000)
+	{
+		printf("WARNING: LoadDynamicString, size appears to be wrong, size=%d, %s:%d\n", length, sourceFile, sourceLine);
+		return false;
+	}
+
+	buffer = new char[length + 1];
+	if (!FileReadData(buffer, length, 1, file))
+	{
+		buffer[length] = 0;
+		return false;
+	}
+	buffer[length] = 0;
+
+	return true;
 }
 
 char* GetFilePath(const char* path)
@@ -83,42 +134,4 @@ void EmptyDirectory(const char* path)
 	}
 
 	closedir(dir);
-}
-
-void PrintDArray(DArray<UplinkObject*>* array)
-{
-	UplinkAssert(array);
-
-	for (auto i = 0; i < array->Size(); i++)
-	{
-		printf("Index = %d\n", i);
-
-		if (!array->ValidIndex(i))
-		{
-			puts("Not a Valid Index");
-			continue;
-		}
-
-		const auto item = array->GetData(i);
-
-		if (!item)
-		{
-			puts("NULL");
-			continue;
-		}
-
-		item->Print();
-	}
-}
-
-bool FileReadDataIntImpl(const char* sourceFile, size_t sourceLine, void* buffer, size_t size, size_t count, FILE* file)
-{
-	const auto actualCount = fread(buffer, size, count, file);
-
-	if (count != actualCount)
-		printf("WARNING: FileReadDataInt, request read count is different then the actual read count, request=%zu, actual=%zu, errno=%d, "
-			   "%s:%zu\n",
-			   count, actualCount, errno, sourceFile, sourceLine);
-
-	return count == actualCount;
 }
