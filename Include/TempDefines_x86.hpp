@@ -1,6 +1,7 @@
 #pragma once
 
 #include <App.hpp>
+#include <Bungle.hpp>
 #include <Options.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -27,12 +28,14 @@ static const auto gWindowScaleXPtr = (float*)0x08204948;
 static const auto gWindowScaleYPtr = (float*)0x08204944;
 #define gWindowScaleY (*gWindowScaleYPtr)
 
+static const auto gFilesPtr = (BTree<Bungle::LocalFileHeader*>*)0x082070B0;
+#define gFiles (*gFilesPtr)
+
 static const auto baseCompileDate = (const char*)0x081AD138;
 static const auto baseCompileTime = (const char*)0x081AD12F;
 
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x080FEE90;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x080FE6A0;
-static const auto Load_Data = (bool (*)(void))0x080FE310;
 static const auto Init_Game = (void (*)(void))0x080FE1D0;
 static const auto Init_Graphics = (void (*)(void))0x080FDFC0;
 static const auto Init_Fonts = (void (*)(void))0x080FDD70;
