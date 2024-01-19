@@ -42,7 +42,7 @@ template <typename T> BTree<T>* BTree<T>::LookupTree(const char* key)
 	return nullptr;
 }
 
-template <typename T> void BTree<T>::PutData(const char* key, T& value)
+template <typename T> void BTree<T>::PutData(const char* key, const T& value)
 {
 	auto node = this;
 

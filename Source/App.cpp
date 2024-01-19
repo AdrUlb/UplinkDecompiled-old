@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 App::App()
+	: initTime(0), closed(false), options(nullptr), network(nullptr), mainMenu(nullptr), phoneDialler(nullptr), RequireCodeCard(false)
 {
 	UplinkStrncpy(Path, "c:/", PathMax);
 	UplinkStrncpy(UsersPath, Path, PathMax);
@@ -12,14 +13,6 @@ App::App()
 	UplinkStrncpy(Date, "01/01/97", DateMax);
 	UplinkStrncpy(Title, "NewApp", TitleMax);
 	UplinkStrncpy(Build, "Version 1.0 (RELEASE), Compiled on 01/01/97", BuildMax);
-	initTime = 0;
-	options = nullptr;
-	network = nullptr;
-	mainMenu = nullptr;
-	phoneDialler = nullptr;
-	nextLoadGame = nullptr;
-	closed = false;
-	requireCodeCard = false;
 }
 
 App::~App()

@@ -15,7 +15,7 @@ public:
 	BTree();
 	BTree(const char* key, const T& value);
 	BTree<T>* LookupTree(const char* key);
-	void PutData(const char* key, T& value);
+	void PutData(const char* key, const T& value);
 	DArray<T>* ConvertToDArray();
 	DArray<char*>* ConvertIndexToDArray();
 

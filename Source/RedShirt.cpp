@@ -1,4 +1,5 @@
 #include <RedShirt.hpp>
+#include <Bungle.hpp>
 #include <TempDefines.hpp>
 #include <algorithm>
 #include <cstddef>
@@ -430,4 +431,51 @@ bool RedShirt::FileEncrypted(const char* path)
 bool RedShirt::EncryptFile(const char* path)
 {
 	return filterFileInPlace(path, ".e", noHeader, writeRsEncryptedHeader, writeRsEncryptedCheckSum, encryptBuffer);
+}
+
+bool RedShirt::LoadArchive(const char* name)
+{
+	char buffer[0x100];
+	sprintf(buffer, "%s%s", gRsAppPath, name);
+
+	auto file = FileOpen(buffer, "rb");
+
+	if (!file)
+	{
+		auto len = strlen(gRsAppPath);
+
+		if (len < 5)
+			return false;
+
+		const auto c1 = gRsAppPath[len - 5];
+		const auto c2 = gRsAppPath[len - 4];
+		const auto c3 = gRsAppPath[len - 3];
+		const auto c4 = gRsAppPath[len - 2];
+		const auto c5 = gRsAppPath[len - 1];
+
+		if ((c1 != '\\' && c1 != '/') || (c2 != 'l' && c2 != 'L') || (c3 != 'i' && c3 != 'I') || (c4 != 'b' && c4 != 'B') ||
+			(c5 != '\\' && c5 != '/'))
+			return false;
+
+		buffer[len - 4] = 0;
+		strcat(buffer, name);
+
+		file = FileOpen(buffer, "rb");
+
+		if (!file)
+			return false;
+	}
+
+	printf("Loading data archive %s...\n", name);
+	const auto success = Bungle::OpenZipFile(file, gRsAppPath, name);
+
+	FileClose(name, file);
+
+	if (!success)
+	{
+		puts("ERROR LOADING ARCHIVE!");
+		return false;
+	}
+
+	return true;
 }

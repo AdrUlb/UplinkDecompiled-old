@@ -34,9 +34,10 @@ private:
 	MainMenu* mainMenu;
 	PhoneDialler* phoneDialler;
 	char* nextLoadGame;
-	bool requireCodeCard;
 
 public:
+	bool RequireCodeCard;
+	
 	App();
 	void Set(const char* path, const char* version, const char* type, const char* date, const char* title);
 	void Initialise();

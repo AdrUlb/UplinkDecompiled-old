@@ -14,4 +14,5 @@ namespace RedShirt
 	bool FileEncryptedNoVerify(const char* path);
 	bool FileEncrypted(const char* path);
 	bool EncryptFile(const char* path);
+	bool LoadArchive(const char* name);
 } // namespace RedShirt

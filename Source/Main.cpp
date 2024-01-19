@@ -102,38 +102,38 @@ static void Init_Options(const int argc, char* argv[])
 {
 	const auto options = gApp->GetOptions();
 
-		for (auto i = 1; i < argc; i++)
+	for (auto i = 1; i < argc; i++)
+	{
+		const auto arg = argv[i];
+		const auto prefix = arg[0];
+
+		const auto optionName = arg + 1;
+		switch (prefix)
 		{
-			const auto arg = argv[i];
-			const auto prefix = arg[0];
+			case '+':
+				options->SetOptionValue(optionName, 1);
+				break;
+			case '-':
+				options->SetOptionValue(optionName, 0);
+				break;
+			case '!':
+				i++;
 
-			const auto optionName = arg + 1;
-			switch (prefix)
-			{
-				case '+':
-					options->SetOptionValue(optionName, 1);
-					break;
-				case '-':
-					options->SetOptionValue(optionName, 0);
-					break;
-				case '!':
-					i++;
-
-					if (i >= argc)
-					{
-						printf("Error parsing command line option : %s\n", arg);
-						break;
-					}
-
-					int value;
-					sscanf(argv[i], "%d", &value);
-					options->SetOptionValue(optionName, value);
-					break;
-				default:
+				if (i >= argc)
+				{
 					printf("Error parsing command line option : %s\n", arg);
-					continue;
-			}
+					break;
+				}
+
+				int value;
+				sscanf(argv[i], "%d", &value);
+				options->SetOptionValue(optionName, value);
+				break;
+			default:
+				printf("Error parsing command line option : %s\n", arg);
+				continue;
 		}
+	}
 
 	if (options->GetOptionValue("graphics_safemode"))
 	{
@@ -150,6 +150,43 @@ static void Init_Options(const int argc, char* argv[])
 
 	if (options->IsOptionEqualTo("game_debugstart", 1))
 		puts("=====DEBUGGING INFORMATION ENABLED=====");
+}
+
+bool TestRsLoadArchive(const char* name)
+{
+	if (RedShirt::LoadArchive(name))
+		return true;
+
+	puts("\nAn error occured in Uplink");
+	puts("Files integrity is not verified");
+	printf("Failed loading '%s'\n", name);
+
+	if (file_stdout != 0)
+	{
+		puts("\nAn Uplink Error has occured");
+		puts("Files integrity is not verified");
+		printf("Failed loading '%s'\n", name);
+	}
+
+	return false;
+}
+
+bool Load_Data()
+{
+	const auto debug = gApp->GetOptions()->IsOptionEqualTo("game_debugstart", 1);
+
+	if (debug)
+		puts("Loading application data");
+
+	if (!TestRsLoadArchive("data.dat") || !TestRsLoadArchive("graphics.dat") || !TestRsLoadArchive("loading.dat") ||
+		!TestRsLoadArchive("sounds.dat") || !TestRsLoadArchive("music.dat") || !TestRsLoadArchive("fonts.dat") ||
+		!TestRsLoadArchive("patch.dat") || !TestRsLoadArchive("patch2.dat") || !TestRsLoadArchive("patch3.dat"))
+		return false;
+
+	if (debug)
+		puts("Finished loading application data");
+
+	return true;
 }
 
 static void Cleanup_Uplink()
@@ -182,13 +219,13 @@ static void RunUplink(const int argc, char* argv[])
 		Cleanup_Uplink();
 		return;
 	}
+
 	Init_Game();
 	Init_Graphics();
 	Init_OpenGL();
 	Init_Fonts();
-	// TODO: reenable sound
-	// Init_Sound();
-	// Init_Music();
+	Init_Sound();
+	Init_Music();
 	Run_MainMenu();
 	Run_Game();
 	Cleanup_Uplink();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <App.hpp>
+#include <Bungle.hpp>
 #include <Options.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -27,12 +28,15 @@ static const auto gWindowScaleXPtr = (float*)0x007B08C8;
 static const auto gWindowScaleYPtr = (float*)0x007B08C4;
 #define gWindowScaleY (*gWindowScaleYPtr)
 
+static const auto gFilesPtr = (BTree<Bungle::LocalFileHeader*>*)0x007B38C0;
+#define gFiles (*gFilesPtr)
+
 static const auto baseCompileDate = (const char*)0x005448F8;
 static const auto baseCompileTime = (const char*)0x005448EF;
 
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x004A0F60;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x004A07E0;
-static const auto Load_Data = (bool (*)(void))0x004A04A0;
+// static const auto Load_Data = (bool (*)(void))0x004A04A0;
 static const auto Init_Game = (void (*)(void))0x004A0390;
 static const auto Init_Graphics = (void (*)(void))0x004A01E0;
 static const auto Init_Fonts = (void (*)(void))0x0049FFA0;
@@ -44,9 +48,11 @@ static const auto Run_Game = (void (*)(void))0x0049FD30;
 static const auto DeleteBTreeData = (void (*)(BTree<UplinkObject*>*))0x004111F0;
 static const auto DeleteDArrayDataD = (void (*)(DArray<UplinkObject*>*))0x00411B10;
 static const auto EclGetAccurateTime = (double (*)(void))0x0050DBC0;
-static const auto CreateUplinkObject = (UplinkObject*(*)(int))0x0040FF10;
+static const auto CreateUplinkObject = (UplinkObject * (*)(int))0x0040FF10;
 
+static const auto BglOpenZipFile = (bool (*)(FILE* file, const char*, const char*))0x00513EF0;
 static const auto BglCloseAllFiles = (void (*)(void))0x00513740;
+static const auto BglSlashify = (void (*)(char*))0x00513C00;
 
 static const auto App__Close = (void (*)(App*))0x00407230;
 static const auto App__Print = (void (*)(App*))0x00406D30;
