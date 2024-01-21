@@ -136,3 +136,24 @@ template <typename T> void BTree<T>::RecursiveConvertIndexToDArray(DArray<char*>
 		tree = tree->Right();
 	}
 }
+
+template <typename T> void BTree<T>::Empty()
+{
+	if (left)
+	{
+		delete left;
+		left = nullptr;
+	}
+
+	if (right)
+	{
+		delete right;
+		right = nullptr;
+	}
+
+	if (key)
+	{
+		delete[] key;
+		key = nullptr;
+	}
+}

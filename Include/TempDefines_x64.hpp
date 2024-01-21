@@ -49,8 +49,6 @@ static const auto DeleteDArrayDataD = (void (*)(DArray<UplinkObject*>*))0x00411B
 static const auto EclGetAccurateTime = (double (*)(void))0x0050DBC0;
 static const auto CreateUplinkObject = (UplinkObject * (*)(int))0x0040FF10;
 
-static const auto BglCloseAllFiles = (void (*)(void))0x00513740;
-
 static const auto App__Close = (void (*)(App*))0x00407230;
 static const auto App__Print = (void (*)(App*))0x00406D30;
 static const auto App__Update = (void (*)(App*))0x004076F0;

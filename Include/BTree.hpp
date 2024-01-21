@@ -18,6 +18,7 @@ public:
 	void PutData(const char* key, const T& value);
 	DArray<T>* ConvertToDArray();
 	DArray<char*>* ConvertIndexToDArray();
+	void Empty();
 
 	inline BTree<T>* Left()
 	{

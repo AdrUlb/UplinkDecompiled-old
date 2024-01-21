@@ -305,7 +305,7 @@ void RedShirt::CleanUp()
 	}
 
 	DeleteDirectory(gRsTempDir);
-	BglCloseAllFiles();
+	Bungle::CloseAllFiles();
 	return;
 }
 

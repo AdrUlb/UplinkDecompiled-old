@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdio>
 #include <cstdint>
+#include <cstdio>
 
 namespace Bungle
 {
@@ -24,5 +24,6 @@ namespace Bungle
 		char* ArchiveName;
 	};
 
+	void CloseAllFiles();
 	bool OpenZipFile(FILE* file, const char* dirPath, const char* fileName);
-}
+} // namespace Bungle

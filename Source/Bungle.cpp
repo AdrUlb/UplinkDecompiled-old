@@ -18,6 +18,42 @@ static void Slashify(char* path)
 	}
 }
 
+void CloseAllFiles(BTree<Bungle::LocalFileHeader*>* tree)
+{
+	if (!tree)
+		return;
+
+	CloseAllFiles(tree->Left());
+	CloseAllFiles(tree->Right());
+
+	const auto header = tree->Value;
+
+	if (header)
+	{
+		if (header->Filename)
+			delete[] header->Filename;
+
+		if (header->ExtraField)
+			delete[] header->ExtraField;
+
+		if (header->Data)
+			delete[] header->Data;
+
+		if (header->ArchiveName)
+			delete[] header->ArchiveName;
+
+		delete header;
+	}
+
+	tree->Empty();
+}
+
+void Bungle::CloseAllFiles()
+{
+	CloseAllFiles(&gFiles);
+	return;
+}
+
 bool Bungle::OpenZipFile(FILE* file, const char* dirPath, const char* fileName)
 {
 	if (!file)
