@@ -3,6 +3,9 @@
 #include <dirent.h>
 #include <errno.h>
 
+const char* gCurrentSaveVersion = "SAV62";
+const char* gMinSaveVersion = "SAV56";
+
 char* UplinkStrncpyImpl(const char* sourceFile, const int sourceLine, char* dest, const char* src, const size_t num)
 {
 	const auto len = strlen(src);

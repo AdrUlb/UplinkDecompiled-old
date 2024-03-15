@@ -5,7 +5,11 @@
 #include <UplinkObject.hpp>
 
 typedef void OptionChange;
-typedef void ColourOption;
+
+struct ColourOption
+{
+	char unknown[0xC];
+};
 
 class Option : UplinkObject
 {
@@ -31,11 +35,6 @@ public:
 
 class Options : UplinkObject
 {
-	static constexpr size_t themeNameMax = 0x80;
-	static constexpr size_t themeAuthorMax = 0x80;
-	static constexpr size_t themeTitleMax = 0x80;
-	static constexpr size_t themeDescriptionMax = 0x400;
-
 	BTree<Option*> options;
 	LList<OptionChange*> optionChanges;
 	char themeName[0x80];

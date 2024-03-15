@@ -2,7 +2,12 @@
 
 #include <App.hpp>
 #include <Bungle.hpp>
+#include <GameObituary.hpp>
+#include <Interface.hpp>
 #include <Options.hpp>
+#include <View.hpp>
+#include <World.hpp>
+#include <Game.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -15,6 +20,9 @@ static const auto file_stdoutPtr = (FILE**)0x007B2F30;
 
 static const auto gAppPtr = (App**)0x007B2710;
 #define gApp (*gAppPtr)
+
+static const auto gGamePtr = (Game**)0x007b2988;
+#define gGame (*gGamePtr)
 
 static const auto gRsAppPath = (char*)0x007B2000;
 static const auto gRsTempDir = (char*)0x007B2100;
@@ -31,12 +39,8 @@ static const auto gWindowScaleYPtr = (float*)0x007B08C4;
 static const auto gFilesPtr = (BTree<Bungle::LocalFileHeader*>*)0x007B38C0;
 #define gFiles (*gFilesPtr)
 
-static const auto baseCompileDate = (const char*)0x005448F8;
-static const auto baseCompileTime = (const char*)0x005448EF;
-
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x004A0F60;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x004A07E0;
-static const auto Init_Game = (void (*)(void))0x004A0390;
 static const auto Init_Graphics = (void (*)(void))0x004A01E0;
 static const auto Init_Fonts = (void (*)(void))0x0049FFA0;
 static const auto Init_Sound = (void (*)(void))0x004A0340;
@@ -66,3 +70,15 @@ static const auto MainMenu__Update = (bool (*)(MainMenu*))0x00490BD0;
 
 static const auto StubImplTcp4uInit = (int (*)(void))0x00514944;
 static const auto StubImplTcp4uCleanup = (int (*)(void))0x0051499B;
+
+static const auto GameObituary__Load = (void (*)(GameObituary*, FILE*))0x00414570;
+
+static const auto World__Load = (void (*)(World*, FILE*))0x00506D60;
+
+static const auto Interface__Load = (void (*)(Interface*, FILE*))0x0041ABA0;
+
+static const auto View__Load = (void (*)(View*, FILE*))0x004A1530;
+
+static const auto Game__Load = (bool (*)(Game*, FILE*))0x00413660;
+static const auto Game__Print = (bool (*)(Game*))0x004133D0;
+static const auto Game__Update = (bool (*)(Game*))0x00413340;

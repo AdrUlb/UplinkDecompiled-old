@@ -198,6 +198,21 @@ static void Cleanup_Uplink()
 	}
 }
 
+static void Init_Game()
+{
+	const auto  debug = gApp->GetOptions()->IsOptionEqualTo("game_debugstart", 1);
+	
+	if (debug)
+		puts("Init_Game called...creating game…");
+
+	srand(time(nullptr));
+
+	gGame = new Game();
+
+	if (debug)
+		puts("Finished with Init_Game");
+}
+
 static void RunUplink(const int argc, char* argv[])
 {
 	if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'v')

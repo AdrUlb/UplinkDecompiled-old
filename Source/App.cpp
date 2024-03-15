@@ -49,12 +49,10 @@ void App::Set(const char* path, const char* version, const char* type, const cha
 	UplinkStrncpy(Type, type, TypeMax);
 	UplinkStrncpy(Date, date, DateMax);
 	UplinkStrncpy(Title, title, TitleMax);
-	// TODO: remove base game compile date
 	UplinkSnprintf(Build, BuildMax,
 				   "Version %s (%s)\n"
-				   "Base compiled on %s at %s\n"
 				   "Compiled on %s\n",
-				   Version, Type, baseCompileDate, baseCompileTime, Date);
+				   Version, Type, Date);
 
 	auto homeDir = getenv("HOME");
 	if (homeDir)

@@ -4,6 +4,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+extern const char* gCurrentSaveVersion;
+extern const char* gMinSaveVersion;
+
 char* UplinkStrncpyImpl(const char* sourceFile, int sourceLine, char* dest, const char* src, size_t num);
 
 void UplinkAssertImpl(const char* sourceFile, int sourceLine, const char* conditionString, bool condition);

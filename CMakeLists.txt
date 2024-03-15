@@ -24,6 +24,7 @@ add_library(UplinkDecompiled SHARED
 	Source/BTree.cpp
 	Source/Bungle.cpp
 	Source/DArray.cpp
+	Source/Game.cpp
 	Source/LibMain.cpp
 	Source/Main.cpp
 	Source/MainMenu.cpp

@@ -2,7 +2,12 @@
 
 #include <App.hpp>
 #include <Bungle.hpp>
+#include <GameObituary.hpp>
+#include <Interface.hpp>
 #include <Options.hpp>
+#include <View.hpp>
+#include <World.hpp>
+#include <Game.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -15,6 +20,9 @@ static const auto file_stdoutPtr = (FILE**)0x08206A24;
 
 static const auto gAppPtr = (App**)0x08206304;
 #define gApp (*gAppPtr)
+
+static const auto gGamePtr = (Game**)0x0820657C;
+#define gGame (*gGamePtr)
 
 static const auto gRsAppPath = (char*)0x08205DE0;
 static const auto gRsTempDir = (char*)0x08205EE0;
@@ -31,12 +39,8 @@ static const auto gWindowScaleYPtr = (float*)0x08204944;
 static const auto gFilesPtr = (BTree<Bungle::LocalFileHeader*>*)0x082070B0;
 #define gFiles (*gFilesPtr)
 
-static const auto baseCompileDate = (const char*)0x081AD138;
-static const auto baseCompileTime = (const char*)0x081AD12F;
-
 static const auto RunUplinkExceptionHandling = (void (*)(void))0x080FEE90;
 static const auto VerifyLegitAndCodeCardCheck = (bool (*)(void))0x080FE6A0;
-static const auto Init_Game = (void (*)(void))0x080FE1D0;
 static const auto Init_Graphics = (void (*)(void))0x080FDFC0;
 static const auto Init_Fonts = (void (*)(void))0x080FDD70;
 static const auto Init_Sound = (void (*)(void))0x080FE170;
@@ -47,7 +51,7 @@ static const auto Run_Game = (void (*)(void))0x080FDA60;
 static const auto DeleteBTreeData = (void (*)(BTree<UplinkObject*>*))0x080587A0;
 static const auto DeleteDArrayDataD = (void (*)(DArray<UplinkObject*>*))0x080591D0;
 static const auto EclGetAccurateTime = (double (*)(void))0x08177BB0;
-static const auto CreateUplinkObject = (UplinkObject*(*)(int))0x080572B0;
+static const auto CreateUplinkObject = (UplinkObject * (*)(int))0x080572B0;
 
 static const auto App__Close = (void (*)(App*))0x0804D5B0;
 static const auto App__Print = (void (*)(App*))0x0804D060;
@@ -66,3 +70,15 @@ static const auto MainMenu__Update = (bool (*)(MainMenu*))0x080EC330;
 
 static const auto StubImplTcp4uInit = (int (*)(void))0x0817F2B8;
 static const auto StubImplTcp4uCleanup = (int (*)(void))0x0817F30D;
+
+static const auto GameObituary__Load = (void (*)(GameObituary*, FILE*))0x0805C0B0;
+
+static const auto World__Load = (void (*)(World*, FILE*))0x08170530;
+
+static const auto Interface__Load = (void (*)(Interface*, FILE*))0x08063010;
+
+static const auto View__Load = (void (*)(View*, FILE*))0x080FF590;
+
+static const auto Game__Load = (bool (*)(Game*, FILE*))0x0805AF20;
+static const auto Game__Print = (bool (*)(Game*))0x0805AC20;
+static const auto Game__Update = (bool (*)(Game*))0x0805AB80;

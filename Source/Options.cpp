@@ -2,9 +2,6 @@
 #include <RedShirt.hpp>
 #include <TempDefines.hpp>
 
-constexpr auto saveVersion = "SAV62";
-constexpr auto minSaveVersion = "SAV56";
-
 Option::Option() : Name{0}, Tooltip{0}, YesOrNo(false), Visible(true), Value(0) {}
 
 Option::~Option() {}
@@ -68,7 +65,7 @@ UplinkObjectId Option::GetOBJECTID()
 
 Options::Options()
 {
-	strncpy(themeName, "graphics", themeNameMax);
+	strncpy(themeName, "graphics", sizeof(themeName));
 }
 
 Options::~Options()
@@ -96,7 +93,7 @@ bool Options::Load(FILE* file)
 	(void)file;
 	FILE* optionsFile;
 	char optionsFilePath[0x100];
-	char themeName[themeNameMax + 4];
+	char themeName[sizeof(themeName) + 4];
 	char saveVersion[0x20];
 
 	UplinkSnprintf(optionsFilePath, sizeof(optionsFilePath), "%soptions", gApp->UsersPath);
@@ -124,7 +121,7 @@ bool Options::Load(FILE* file)
 		return false;
 	}
 
-	if (!FileReadData(saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, minSaveVersion) < 0 ||
+	if (!FileReadData(saveVersion, 6, 1, optionsFile) || saveVersion[0] == 0 || strcmp(saveVersion, gMinSaveVersion) < 0 ||
 		strcmp(saveVersion, saveVersion) > 0)
 	{
 		puts("\nERROR : Could not load options due to incompatible version format");
@@ -151,7 +148,7 @@ bool Options::Load(FILE* file)
 	// This code will work with either both 32-bit and 64-bit integers in this field
 	uint32_t themeNameLength = 0;
 	if ((fgetc(optionsFile) == 't' && fread(&themeNameLength, sizeof(themeNameLength), 1, optionsFile) == 1) &&
-		themeNameLength + 1 < themeNameMax)
+		themeNameLength + 1 < sizeof(themeName))
 	{
 		if (fread(themeName, themeNameLength, 1, optionsFile) == 1)
 		{
@@ -164,7 +161,7 @@ bool Options::Load(FILE* file)
 			}
 
 			fixedThemeName[themeNameLength] = 0;
-			UplinkStrncpy(this->themeName, fixedThemeName, themeNameMax);
+			UplinkStrncpy(this->themeName, fixedThemeName, sizeof(themeName));
 		}
 	}
 
@@ -198,7 +195,7 @@ void Options::Save(FILE* file)
 
 	puts("success");
 
-	fwrite(saveVersion, 6, 1, optionsFile);
+	fwrite(gCurrentSaveVersion, 6, 1, optionsFile);
 
 	SaveID(optionsFile);
 	SaveBTree((BTree<UplinkObject*>*)&options, optionsFile);
